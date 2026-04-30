@@ -1,106 +1,121 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Bot, BrainCircuit, ChartNoAxesCombined, Cpu, DatabaseZap, Gauge, Layers3, MousePointer2, Network, Orbit, ShieldCheck, Sparkles, Workflow, Zap } from 'lucide-react'
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion'
+import { ArrowRight, Bot, BrainCircuit, ChartNoAxesCombined, Check, Cpu, DatabaseZap, Fingerprint, Gauge, Network, Orbit, ShieldCheck, Sparkles, Workflow, Zap } from 'lucide-react'
 import './styles.css'
 
 const services = [
-  ['01', 'Automação de processos', 'Fluxos que executam tarefas repetitivas, reduzem falhas e criam previsibilidade operacional.', Workflow],
-  ['02', 'Agentes de IA', 'Assistentes treinados para atendimento, análise, triagem, organização e execução de rotinas.', Bot],
-  ['03', 'Dashboards inteligentes', 'Painéis vivos para leitura de operação, performance, gargalos e oportunidades.', ChartNoAxesCombined],
-  ['04', 'Integrações', 'Sistemas, planilhas, formulários, APIs e dados conectados em uma arquitetura única.', DatabaseZap]
+  { n: '01', title: 'Processos vivos', text: 'Fluxos que não ficam parados: recebem dados, executam rotinas, disparam alertas e criam histórico.', icon: Workflow },
+  { n: '02', title: 'IA operacional', text: 'Agentes para triagem, atendimento, análise de documentos, organização e execução assistida.', icon: Bot },
+  { n: '03', title: 'Painéis de decisão', text: 'Dashboards com indicadores, gargalos, alertas e visão executiva da operação.', icon: ChartNoAxesCombined },
+  { n: '04', title: 'Integrações reais', text: 'Planilhas, APIs, formulários, bancos e sistemas conversando dentro da mesma lógica.', icon: DatabaseZap }
 ]
 
-const chapters = [
-  ['Manual', 'A operação depende de pessoas lembrando, copiando, conferindo e atualizando dados.'],
-  ['Conectado', 'As informações começam a circular entre setores, sistemas e pontos de decisão.'],
-  ['Inteligente', 'A tecnologia passa a sugerir, alertar, executar e evoluir com a operação.']
+const story = [
+  { label: 'Diagnóstico', title: 'Sua empresa não precisa de mais uma tela.', text: 'Ela precisa de um sistema que entenda o que acontece entre pessoas, dados, tarefas e decisões.', tag: '01 / leitura do caos' },
+  { label: 'Arquitetura', title: 'Transformamos operação em fluxo.', text: 'Cada etapa vira um módulo: entrada de dados, validação, decisão, ação, alerta e registro.', tag: '02 / desenho do sistema' },
+  { label: 'Execução', title: 'O processo começa a se mover sozinho.', text: 'O que era manual passa a rodar com automação, IA, dashboards e integrações conectadas.', tag: '03 / operação inteligente' }
 ]
 
-function NeuralBackground() {
-  const canvasRef = useRef(null)
+function PointerGlow() {
+  const x = useMotionValue(-300)
+  const y = useMotionValue(-300)
+  const sx = useSpring(x, { stiffness: 130, damping: 24 })
+  const sy = useSpring(y, { stiffness: 130, damping: 24 })
 
   useEffect(() => {
-    const canvas = canvasRef.current
+    const move = (event) => {
+      x.set(event.clientX - 240)
+      y.set(event.clientY - 240)
+      document.documentElement.style.setProperty('--mx', `${(event.clientX / innerWidth) * 100}%`)
+      document.documentElement.style.setProperty('--my', `${(event.clientY / innerHeight) * 100}%`)
+    }
+    window.addEventListener('mousemove', move)
+    return () => window.removeEventListener('mousemove', move)
+  }, [x, y])
+
+  return <motion.div className="pointer-glow" style={{ x: sx, y: sy }} />
+}
+
+function NeuralCanvas() {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const canvas = ref.current
     const ctx = canvas.getContext('2d')
     let points = []
     let raf
-    const pointer = { x: -9999, y: -9999, active: false }
+    const pointer = { x: -9999, y: -9999 }
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      canvas.width = window.innerWidth * dpr
-      canvas.height = window.innerHeight * dpr
-      canvas.style.width = `${window.innerWidth}px`
-      canvas.style.height = `${window.innerHeight}px`
+      const dpr = Math.min(devicePixelRatio || 1, 2)
+      canvas.width = innerWidth * dpr
+      canvas.height = innerHeight * dpr
+      canvas.style.width = `${innerWidth}px`
+      canvas.style.height = `${innerHeight}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      const count = Math.min(170, Math.floor((window.innerWidth * window.innerHeight) / 9000))
-      points = Array.from({ length: count }, (_, i) => ({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        vx: (Math.random() - 0.5) * 0.42,
-        vy: (Math.random() - 0.5) * 0.42,
-        r: Math.random() * 1.8 + 0.9,
-        phase: i * 0.13
+      const amount = Math.min(190, Math.floor((innerWidth * innerHeight) / 7800))
+      points = Array.from({ length: amount }, (_, i) => ({
+        x: Math.random() * innerWidth,
+        y: Math.random() * innerHeight,
+        vx: (Math.random() - 0.5) * 0.36,
+        vy: (Math.random() - 0.5) * 0.36,
+        r: Math.random() * 1.7 + 0.8,
+        phase: i * 0.19
       }))
     }
 
     const move = (event) => {
       pointer.x = event.clientX
       pointer.y = event.clientY
-      pointer.active = true
-      document.documentElement.style.setProperty('--mx', `${(event.clientX / window.innerWidth) * 100}%`)
-      document.documentElement.style.setProperty('--my', `${(event.clientY / window.innerHeight) * 100}%`)
     }
 
-    const render = (time) => {
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
-
+    const draw = (time) => {
+      ctx.clearRect(0, 0, innerWidth, innerHeight)
       for (const p of points) {
         p.x += p.vx
         p.y += p.vy
-        if (p.x < -30 || p.x > window.innerWidth + 30) p.vx *= -1
-        if (p.y < -30 || p.y > window.innerHeight + 30) p.vy *= -1
+        if (p.x < -40 || p.x > innerWidth + 40) p.vx *= -1
+        if (p.y < -40 || p.y > innerHeight + 40) p.vy *= -1
 
         const dx = p.x - pointer.x
         const dy = p.y - pointer.y
         const dist = Math.hypot(dx, dy)
-        if (pointer.active && dist < 190 && dist > 1) {
-          p.x += (dx / dist) * 0.56
-          p.y += (dy / dist) * 0.56
+        if (dist < 180 && dist > 1) {
+          p.x += (dx / dist) * 0.5
+          p.y += (dy / dist) * 0.5
         }
 
-        const pulse = Math.sin(time * 0.0015 + p.phase) * 0.45 + 0.55
+        const pulse = Math.sin(time * 0.0018 + p.phase) * 0.5 + 0.5
         ctx.beginPath()
-        ctx.arc(p.x, p.y, p.r + pulse * 0.5, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(82, 183, 255, ${0.22 + pulse * 0.22})`
+        ctx.arc(p.x, p.y, p.r + pulse * 0.6, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(93, 207, 255, ${0.18 + pulse * 0.26})`
         ctx.fill()
       }
 
-      for (let i = 0; i < points.length; i += 1) {
-        for (let j = i + 1; j < points.length; j += 1) {
+      for (let i = 0; i < points.length; i++) {
+        for (let j = i + 1; j < points.length; j++) {
           const a = points[i]
           const b = points[j]
           const d = Math.hypot(a.x - b.x, a.y - b.y)
-          if (d < 150) {
+          if (d < 142) {
             ctx.beginPath()
             ctx.moveTo(a.x, a.y)
             ctx.lineTo(b.x, b.y)
-            ctx.strokeStyle = `rgba(82, 183, 255, ${(1 - d / 150) * 0.24})`
+            ctx.strokeStyle = `rgba(93, 207, 255, ${(1 - d / 142) * 0.25})`
             ctx.lineWidth = 1
             ctx.stroke()
           }
         }
       }
 
-      raf = requestAnimationFrame(render)
+      raf = requestAnimationFrame(draw)
     }
 
     resize()
-    render(0)
+    draw(0)
     window.addEventListener('resize', resize)
     window.addEventListener('mousemove', move)
-
     return () => {
       cancelAnimationFrame(raf)
       window.removeEventListener('resize', resize)
@@ -108,118 +123,120 @@ function NeuralBackground() {
     }
   }, [])
 
-  return <canvas ref={canvasRef} className="neural-canvas" aria-hidden="true" />
+  return <canvas ref={ref} className="neural" aria-hidden="true" />
 }
 
 function Header() {
   return (
-    <header className="header">
-      <a href="#top" className="logo" aria-label="To,Do">
-        <span className="logo-mark">✓</span>
-        <span>To<b>,</b>Do</span>
-      </a>
+    <header className="nav-bar">
+      <a className="brand" href="#top"><span>✓</span>To<b>,</b>Do</a>
       <nav>
-        <a href="#experience">Experiência</a>
-        <a href="#solutions">Soluções</a>
-        <a href="#ecosystem">Ecossistema</a>
+        <a href="#story">Experiência</a>
+        <a href="#suite">Soluções</a>
+        <a href="#lab">Lab</a>
         <a href="#contact">Contato</a>
       </nav>
-      <a className="nav-cta" href="#contact">Começar</a>
+      <a href="#contact" className="small-cta">Desenhar sistema</a>
     </header>
   )
 }
 
 function Hero() {
   const { scrollYProgress } = useScroll()
-  const y = useTransform(scrollYProgress, [0, 0.25], [0, -90])
-  const scale = useTransform(scrollYProgress, [0, 0.25], [1, 0.86])
+  const heroY = useTransform(scrollYProgress, [0, 0.22], [0, -120])
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.22], [1, 0.35])
 
   return (
-    <section id="top" className="hero section-shell">
-      <motion.div className="hero-copy" style={{ y }}>
-        <p className="eyebrow"><Sparkles size={16} /> Desenvolvimento inteligente</p>
-        <h1>Construímos sistemas que fazem sua operação parecer viva.</h1>
-        <p className="lead">
-          A To,Do transforma processos manuais em experiências digitais inteligentes: automação, IA, dados e interfaces que evoluem com o negócio.
-        </p>
-        <div className="hero-actions">
-          <a className="primary" href="#contact">Desenhar minha automação <ArrowRight size={18} /></a>
-          <a className="secondary" href="#experience">Ver experiência</a>
-        </div>
-        <div className="micro-grid">
-          <div><strong>Processos</strong><span>mapeados e automatizados</span></div>
-          <div><strong>Dados</strong><span>visíveis em tempo real</span></div>
-          <div><strong>IA</strong><span>aplicada à operação</span></div>
-        </div>
+    <section id="top" className="hero-shell">
+      <motion.div className="hero-copy" style={{ y: heroY, opacity: heroOpacity }}>
+        <motion.p className="eyebrow" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}><Sparkles size={16}/> To,Do · Intelligent Operating Layer</motion.p>
+        <motion.h1 initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .08 }}>Sua operação merece uma interface que parece pensar.</motion.h1>
+        <motion.p className="lead" initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .16 }}>
+          Criamos experiências digitais, automações, agentes de IA e dashboards que conectam pessoas, dados e decisões em um ecossistema vivo.
+        </motion.p>
+        <motion.div className="hero-actions" initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .24 }}>
+          <a href="#story" className="primary">Explorar experiência <ArrowRight size={18}/></a>
+          <a href="#suite" className="secondary">Ver soluções</a>
+        </motion.div>
       </motion.div>
 
-      <motion.div className="system-stage" style={{ scale }}>
-        <div className="orbit orbit-a" />
-        <div className="orbit orbit-b" />
-        <div className="orbit orbit-c" />
-        <motion.div className="system-core" animate={{ rotate: [0, 4, -4, 0] }} transition={{ duration: 7, repeat: Infinity }}>
-          <Cpu size={62} />
-        </motion.div>
-        <motion.div className="stage-node node-a" animate={{ y: [0, -18, 0] }} transition={{ duration: 5, repeat: Infinity }}><BrainCircuit /></motion.div>
-        <motion.div className="stage-node node-b" animate={{ x: [0, 16, 0] }} transition={{ duration: 5.6, repeat: Infinity }}><Network /></motion.div>
-        <motion.div className="stage-node node-c" animate={{ y: [0, 14, 0] }} transition={{ duration: 4.8, repeat: Infinity }}><Gauge /></motion.div>
-        <motion.div className="stage-node node-d" animate={{ x: [0, -14, 0] }} transition={{ duration: 6.4, repeat: Infinity }}><ShieldCheck /></motion.div>
-        <motion.div className="console console-a" initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
-          <span>fluxo automatizado</span><strong>82%</strong><i><em style={{ width: '82%' }} /></i>
-        </motion.div>
-        <motion.div className="console console-b" initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }}>
-          <span>retrabalho reduzido</span><strong>64%</strong><i><em style={{ width: '64%' }} /></i>
-        </motion.div>
-      </motion.div>
+      <SystemGalaxy />
+
+      <div className="scroll-hint"><span>scroll</span><i /></div>
     </section>
   )
 }
 
-function Experience() {
+function SystemGalaxy() {
+  const rings = useMemo(() => [0, 1, 2, 3], [])
   return (
-    <section id="experience" className="scrolly">
-      <div className="sticky-visual">
-        <div className="story-screen">
-          <div className="screen-header"><span /> <span /> <span /></div>
-          <div className="flow-map">
-            <motion.div className="flow-dot f1" animate={{ scale: [1, 1.35, 1] }} transition={{ duration: 2.6, repeat: Infinity }} />
-            <motion.div className="flow-dot f2" animate={{ scale: [1, 1.35, 1] }} transition={{ duration: 2.8, repeat: Infinity, delay: .4 }} />
-            <motion.div className="flow-dot f3" animate={{ scale: [1, 1.35, 1] }} transition={{ duration: 3, repeat: Infinity, delay: .8 }} />
-            <div className="flow-line one" />
-            <div className="flow-line two" />
-            <div className="signal-card top"><Layers3 size={18}/> Processos</div>
-            <div className="signal-card mid"><BrainCircuit size={18}/> IA</div>
-            <div className="signal-card bottom"><ChartNoAxesCombined size={18}/> Decisão</div>
+    <motion.div className="galaxy" initial={{ opacity: 0, scale: .92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }}>
+      {rings.map((ring) => <div key={ring} className={`galaxy-ring ring-${ring}`} />)}
+      <motion.div className="galaxy-core" animate={{ rotate: [0, 3, -3, 0] }} transition={{ duration: 6, repeat: Infinity }}>
+        <Cpu size={66}/>
+        <strong>To,Do OS</strong>
+      </motion.div>
+      <FloatingNode className="g-a" icon={<BrainCircuit />} label="IA" />
+      <FloatingNode className="g-b" icon={<Network />} label="APIs" />
+      <FloatingNode className="g-c" icon={<Gauge />} label="Dados" />
+      <FloatingNode className="g-d" icon={<ShieldCheck />} label="Controle" />
+      <motion.div className="metric-card m-a" animate={{ y: [0, -12, 0] }} transition={{ repeat: Infinity, duration: 4.5 }}>
+        <span>tarefas manuais</span><strong>-64%</strong><i><em style={{ width: '64%' }}/></i>
+      </motion.div>
+      <motion.div className="metric-card m-b" animate={{ y: [0, 12, 0] }} transition={{ repeat: Infinity, duration: 5.2 }}>
+        <span>fluxos conectados</span><strong>+82%</strong><i><em style={{ width: '82%' }}/></i>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+function FloatingNode({ className, icon, label }) {
+  return <motion.div className={`floating-node ${className}`} animate={{ y: [0, -16, 0] }} transition={{ repeat: Infinity, duration: 5.4 }}>{icon}<span>{label}</span></motion.div>
+}
+
+function Story() {
+  const target = useRef(null)
+  const { scrollYProgress } = useScroll({ target, offset: ['start start', 'end end'] })
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, 60])
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-38%'])
+
+  return (
+    <section id="story" ref={target} className="story-section">
+      <div className="story-sticky">
+        <motion.div className="story-stage" style={{ rotate }}>
+          <div className="story-orbit" />
+          <div className="story-orbit small" />
+          <div className="story-card main-card">
+            <span>LIVE OPERATION</span>
+            <strong>Manual → Connected → Intelligent</strong>
           </div>
-        </div>
-      </div>
-      <div className="story-copy">
-        {chapters.map(([title, text], index) => (
-          <motion.article className="chapter" key={title} initial={{ opacity: 0, y: 80 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ amount: 0.55 }}>
-            <span>0{index + 1}</span>
-            <h2>{title}</h2>
-            <p>{text}</p>
-          </motion.article>
-        ))}
+          <div className="mini-panel p1">dados</div>
+          <div className="mini-panel p2">rotinas</div>
+          <div className="mini-panel p3">decisão</div>
+        </motion.div>
+        <motion.div className="horizontal-copy" style={{ x }}>
+          {story.map((item) => <article key={item.title}><span>{item.tag}</span><h2>{item.title}</h2><p>{item.text}</p></article>)}
+        </motion.div>
       </div>
     </section>
   )
 }
 
-function Services() {
+function Suite() {
   return (
-    <section id="solutions" className="section-shell block-section">
-      <div className="section-heading">
-        <p className="eyebrow"><Orbit size={16} /> Soluções</p>
-        <h2>Não entregamos apenas telas. Entregamos fluxo, controle e evolução.</h2>
+    <section id="suite" className="section suite-section">
+      <div className="section-head">
+        <p className="eyebrow"><Orbit size={16}/> Product suite</p>
+        <h2>Um ecossistema de construção para empresas que precisam sair do manual.</h2>
       </div>
-      <div className="service-grid">
-        {services.map(([num, title, text, Icon], index) => (
-          <motion.article className="service-card" key={title} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.08 }} viewport={{ once: true }} whileHover={{ y: -10 }}>
-            <span>{num}</span>
-            <div className="icon-box"><Icon /></div>
+      <div className="suite-grid">
+        {services.map(({ n, title, text, icon: Icon }, index) => (
+          <motion.article className="suite-card" key={title} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .08 }} whileHover={{ y: -12, rotate: index % 2 ? -1.2 : 1.2 }}>
+            <span>{n}</span>
+            <div className="suite-icon"><Icon size={28}/></div>
             <h3>{title}</h3>
             <p>{text}</p>
+            <a href="#contact">construir módulo <ArrowRight size={15}/></a>
           </motion.article>
         ))}
       </div>
@@ -227,24 +244,18 @@ function Services() {
   )
 }
 
-function Ecosystem() {
-  const modules = ['Atendimento', 'Operação', 'Dados', 'IA', 'Financeiro', 'Gestão']
+function Lab() {
+  const modules = ['CRM', 'WhatsApp', 'Planilhas', 'Financeiro', 'Operação', 'Relatórios', 'Suporte', 'IA']
   return (
-    <section id="ecosystem" className="section-shell ecosystem-section">
-      <div>
-        <p className="eyebrow"><MousePointer2 size={16} /> Ecossistema To,Do</p>
-        <h2>Uma camada inteligente por cima da sua empresa.</h2>
-        <p>
-          Imagine cada área conectada a um núcleo operacional: dados entram, processos rodam, alertas aparecem e decisões ficam mais simples.
-        </p>
+    <section id="lab" className="section lab-section">
+      <div className="lab-copy">
+        <p className="eyebrow"><Fingerprint size={16}/> To,Do Lab</p>
+        <h2>Uma camada inteligente conectando o que já existe.</h2>
+        <p>Não partimos da tela. Partimos do ecossistema: onde o dado nasce, quem precisa agir, qual decisão deve ser tomada e como o processo aprende com isso.</p>
       </div>
-      <div className="ecosystem-board">
-        <div className="ecosystem-core"><Zap size={34} /> To,Do OS</div>
-        {modules.map((module, index) => (
-          <motion.div className={`eco-module eco-${index}`} key={module} animate={{ y: [0, -10, 0] }} transition={{ duration: 4 + index * 0.25, repeat: Infinity }}>
-            {module}
-          </motion.div>
-        ))}
+      <div className="lab-board">
+        <div className="lab-core"><Zap/>Core</div>
+        {modules.map((module, index) => <motion.div key={module} className={`lab-module lm-${index}`} animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4 + index * .22 }}>{module}</motion.div>)}
       </div>
     </section>
   )
@@ -252,41 +263,39 @@ function Ecosystem() {
 
 function Contact() {
   return (
-    <section id="contact" className="section-shell contact-section">
-      <motion.div className="contact-card" initial={{ opacity: 0, scale: .95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
-        <p className="eyebrow"><Sparkles size={16} /> Próximo passo</p>
-        <h2>Sua empresa ainda opera no manual?</h2>
-        <p>Vamos transformar sua operação em um sistema mais conectado, automatizado e inteligente.</p>
-        <a className="primary" href="mailto:contato@todo.com.br?subject=Quero%20automatizar%20minha%20empresa">Falar com a To,Do <ArrowRight size={18} /></a>
+    <section id="contact" className="section contact-section">
+      <motion.div className="contact-card" initial={{ opacity: 0, scale: .94 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
+        <p className="eyebrow"><Check size={16}/> Próximo passo</p>
+        <h2>Vamos desenhar a versão inteligente da sua operação?</h2>
+        <p>Mapeamos seus processos e transformamos a operação em um ecossistema digital com automação, IA e indicadores reais.</p>
+        <a className="primary" href="mailto:contato@todo.com.br?subject=Quero%20desenhar%20um%20sistema%20inteligente">Falar com a To,Do <ArrowRight size={18}/></a>
       </motion.div>
     </section>
   )
 }
 
 function App() {
-  const [ready, setReady] = useState(false)
+  const [loaded, setLoaded] = useState(false)
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 600)
+    const timer = setTimeout(() => setLoaded(true), 900)
     return () => clearTimeout(timer)
   }, [])
 
   return (
     <>
-      <NeuralBackground />
+      <NeuralCanvas />
+      <PointerGlow />
       <div className="ambient" />
-      <motion.div className="loader" animate={{ opacity: ready ? 0 : 1, pointerEvents: ready ? 'none' : 'auto' }}>
-        <span>To,Do</span>
-        <i />
-      </motion.div>
+      <motion.div className="loader" animate={{ opacity: loaded ? 0 : 1, pointerEvents: loaded ? 'none' : 'auto' }} transition={{ duration: .5 }}><span>To,Do</span><i/></motion.div>
       <Header />
       <main>
         <Hero />
-        <Experience />
-        <Services />
-        <Ecosystem />
+        <Story />
+        <Suite />
+        <Lab />
         <Contact />
       </main>
-      <footer className="footer section-shell">To,Do — Automatize. Conecte. Evolua.</footer>
+      <footer className="footer">To,Do — Automatize. Conecte. Evolua.</footer>
     </>
   )
 }
