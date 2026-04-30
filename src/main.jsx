@@ -1,10 +1,294 @@
-import React,{useEffect,useRef}from'react';import{createRoot}from'react-dom/client';import{motion}from'framer-motion';import{Bot,BrainCircuit,ChartNoAxesCombined,Cpu,Network,ShieldCheck,Workflow,Zap,DatabaseZap,ArrowRight}from'lucide-react';import'./styles.css';
-const items=[['Automação de processos','Reduza tarefas repetitivas, padronize fluxos internos e elimine retrabalho operacional.',Zap],['Agentes de IA','Assistentes inteligentes para atendimento, análise, organização e execução de rotinas.',Bot],['Dashboards e dados','Informações dispersas convertidas em painéis claros para tomada de decisão.',ChartNoAxesCombined],['Integrações','Planilhas, sistemas, formulários, APIs e bancos de dados trabalhando juntos.',DatabaseZap]];
-function Neural(){const ref=useRef(null);useEffect(()=>{const c=ref.current,ctx=c.getContext('2d');let pts=[],m={x:-999,y:-999},id;function resize(){let d=Math.min(devicePixelRatio||1,2);c.width=innerWidth*d;c.height=innerHeight*d;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';ctx.setTransform(d,0,0,d,0,0);pts=Array.from({length:Math.min(140,Math.floor(innerWidth*innerHeight/12000))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.45,vy:(Math.random()-.5)*.45,r:Math.random()*1.8+1}))}function move(e){m.x=e.clientX;m.y=e.clientY;document.documentElement.style.setProperty('--mx',m.x/innerWidth*100+'%');document.documentElement.style.setProperty('--my',m.y/innerHeight*100+'%')}function loop(){ctx.clearRect(0,0,innerWidth,innerHeight);for(const p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>innerWidth)p.vx*=-1;if(p.y<0||p.y>innerHeight)p.vy*=-1;let dx=p.x-m.x,dy=p.y-m.y,d=Math.hypot(dx,dy);if(d<170&&d>1){p.x+=dx/d*.55;p.y+=dy/d*.55}ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fillStyle='rgba(88,182,255,.38)';ctx.fill()}for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){let a=pts[i],b=pts[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<150){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle='rgba(88,182,255,'+((1-d/150)*.28)+')';ctx.stroke()}}id=requestAnimationFrame(loop)}resize();loop();addEventListener('resize',resize);addEventListener('mousemove',move);return()=>{cancelAnimationFrame(id);removeEventListener('resize',resize);removeEventListener('mousemove',move)}},[]);return <canvas className="neural" ref={ref}/>}
-function Header(){return <header><a className="logo" href="#top"><span>✓</span>To<b>,</b>Do</a><nav><a href="#solucoes">Soluções</a><a href="#ecossistema">Ecossistema</a><a href="#metodo">Método</a><a href="#contato">Contato</a></nav><a className="ghost" href="#contato">Fale conosco</a></header>}
-function Hero(){return <section id="top" className="hero wrap"><motion.div initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{duration:.8}}><p className="eyebrow">✦ Tecnologia para operações inteligentes</p><h1>Automatize processos. Conecte pessoas. Evolua resultados.</h1><p className="lead">A To,Do desenvolve automações, sistemas, dashboards e agentes de IA para empresas que querem ganhar tempo, organizar fluxos internos e crescer com mais controle.</p><div className="actions"><a className="btn" href="#contato">Quero automatizar minha empresa <ArrowRight size={18}/></a><a className="ghost big" href="#solucoes">Ver soluções</a></div><div className="trust"><div><strong>Automação</strong><span>menos rotina manual</span></div><div><strong>Integração</strong><span>dados conectados</span></div><div><strong>IA aplicada</strong><span>inteligência operacional</span></div></div></motion.div><div className="heroArt"><motion.div className="orbit" animate={{rotate:360}} transition={{repeat:Infinity,duration:45,ease:'linear'}}><i/><i/><i/></motion.div><motion.div className="core" whileHover={{scale:1.04,rotateX:8,rotateY:-8}}><Cpu size={62}/></motion.div><motion.div className="node n1" animate={{y:[0,-16,0]}} transition={{repeat:Infinity,duration:5}}><BrainCircuit/></motion.div><motion.div className="node n2" animate={{x:[0,14,0]}} transition={{repeat:Infinity,duration:5.5}}><Network/></motion.div><motion.div className="node n3" animate={{y:[0,14,0]}} transition={{repeat:Infinity,duration:4.5}}><ChartNoAxesCombined/></motion.div><motion.div className="node n4" animate={{x:[0,-12,0]}} transition={{repeat:Infinity,duration:6}}><ShieldCheck/></motion.div></div></section>}
-function Services(){return <section id="solucoes" className="section wrap"><div className="heading"><p className="eyebrow">O que fazemos</p><h2>Soluções digitais para empresas que não querem mais operar no improviso.</h2><p>Criamos tecnologia prática para transformar processos manuais em fluxos organizados, mensuráveis e escaláveis.</p></div><div className="cards">{items.map(([t,p,I],i)=><motion.article className="card" key={t} whileHover={{y:-10}} initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.08}}><div className="ico"><I/></div><h3>{t}</h3><p>{p}</p></motion.article>)}</div></section>}
-function Ecosystem(){return <section id="ecossistema" className="section wrap split"><div><p className="eyebrow">Ecossistema operacional</p><h2>O fundo, os blocos e o fluxo agora respondem ao movimento.</h2><p>Em vez de uma arte parada, o site passa a trabalhar com camadas interativas: rede neural no fundo, ecossistema visual, cards responsivos e animações suaves.</p></div><div className="eco"><span className="line l1"/><span className="line l2"/><span className="line l3"/>{['Equipe','Dados','IA','Sistema'].map((x,i)=><motion.div className={'ecoNode e'+i} key={x} animate={{y:[0,-14,0]}} transition={{repeat:Infinity,duration:4+i*.4}}>{x}</motion.div>)}</div></section>}
-function Method(){let s=[['01','Diagnóstico','Mapeamos gargalos, tarefas repetitivas, riscos e oportunidades reais de automação.'],['02','Arquitetura','Desenhamos o fluxo ideal, a solução técnica e a experiência de uso.'],['03','Construção','Criamos sistemas, automações, integrações e painéis sob medida.'],['04','Evolução','Medimos, ajustamos e ampliamos a solução conforme a operação cresce.']];return <section id="metodo" className="section wrap"><div className="heading"><p className="eyebrow">Nosso método</p><h2>Do caos operacional ao fluxo inteligente.</h2></div><div className="steps">{s.map(([n,t,p])=><motion.article className="step" whileHover={{y:-8}} key={n}><span>{n}</span><h3>{t}</h3><p>{p}</p></motion.article>)}</div></section>}
-function App(){return <><Neural/><div className="bg"/><Header/><main><Hero/><Services/><Ecosystem/><Method/><section id="contato" className="section wrap"><div className="cta"><p className="eyebrow">Próximo passo</p><h2>Sua empresa ainda opera no manual?</h2><p>Vamos mapear quais processos podem ser automatizados e transformar sua operação em um sistema mais inteligente.</p><a className="btn" href="mailto:contato@todo.com.br?subject=Quero automatizar minha empresa">Falar com a To,Do</a></div></section></main><footer className="wrap">To,Do — Automatize. Conecte. Evolua.</footer></>}
-createRoot(document.getElementById('root')).render(<App/>);
+import React, { useEffect, useRef, useState } from 'react'
+import { createRoot } from 'react-dom/client'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowRight, Bot, BrainCircuit, ChartNoAxesCombined, Cpu, DatabaseZap, Gauge, Layers3, MousePointer2, Network, Orbit, ShieldCheck, Sparkles, Workflow, Zap } from 'lucide-react'
+import './styles.css'
+
+const services = [
+  ['01', 'Automação de processos', 'Fluxos que executam tarefas repetitivas, reduzem falhas e criam previsibilidade operacional.', Workflow],
+  ['02', 'Agentes de IA', 'Assistentes treinados para atendimento, análise, triagem, organização e execução de rotinas.', Bot],
+  ['03', 'Dashboards inteligentes', 'Painéis vivos para leitura de operação, performance, gargalos e oportunidades.', ChartNoAxesCombined],
+  ['04', 'Integrações', 'Sistemas, planilhas, formulários, APIs e dados conectados em uma arquitetura única.', DatabaseZap]
+]
+
+const chapters = [
+  ['Manual', 'A operação depende de pessoas lembrando, copiando, conferindo e atualizando dados.'],
+  ['Conectado', 'As informações começam a circular entre setores, sistemas e pontos de decisão.'],
+  ['Inteligente', 'A tecnologia passa a sugerir, alertar, executar e evoluir com a operação.']
+]
+
+function NeuralBackground() {
+  const canvasRef = useRef(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+    let points = []
+    let raf
+    const pointer = { x: -9999, y: -9999, active: false }
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = window.innerWidth * dpr
+      canvas.height = window.innerHeight * dpr
+      canvas.style.width = `${window.innerWidth}px`
+      canvas.style.height = `${window.innerHeight}px`
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      const count = Math.min(170, Math.floor((window.innerWidth * window.innerHeight) / 9000))
+      points = Array.from({ length: count }, (_, i) => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.42,
+        vy: (Math.random() - 0.5) * 0.42,
+        r: Math.random() * 1.8 + 0.9,
+        phase: i * 0.13
+      }))
+    }
+
+    const move = (event) => {
+      pointer.x = event.clientX
+      pointer.y = event.clientY
+      pointer.active = true
+      document.documentElement.style.setProperty('--mx', `${(event.clientX / window.innerWidth) * 100}%`)
+      document.documentElement.style.setProperty('--my', `${(event.clientY / window.innerHeight) * 100}%`)
+    }
+
+    const render = (time) => {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
+
+      for (const p of points) {
+        p.x += p.vx
+        p.y += p.vy
+        if (p.x < -30 || p.x > window.innerWidth + 30) p.vx *= -1
+        if (p.y < -30 || p.y > window.innerHeight + 30) p.vy *= -1
+
+        const dx = p.x - pointer.x
+        const dy = p.y - pointer.y
+        const dist = Math.hypot(dx, dy)
+        if (pointer.active && dist < 190 && dist > 1) {
+          p.x += (dx / dist) * 0.56
+          p.y += (dy / dist) * 0.56
+        }
+
+        const pulse = Math.sin(time * 0.0015 + p.phase) * 0.45 + 0.55
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r + pulse * 0.5, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(82, 183, 255, ${0.22 + pulse * 0.22})`
+        ctx.fill()
+      }
+
+      for (let i = 0; i < points.length; i += 1) {
+        for (let j = i + 1; j < points.length; j += 1) {
+          const a = points[i]
+          const b = points[j]
+          const d = Math.hypot(a.x - b.x, a.y - b.y)
+          if (d < 150) {
+            ctx.beginPath()
+            ctx.moveTo(a.x, a.y)
+            ctx.lineTo(b.x, b.y)
+            ctx.strokeStyle = `rgba(82, 183, 255, ${(1 - d / 150) * 0.24})`
+            ctx.lineWidth = 1
+            ctx.stroke()
+          }
+        }
+      }
+
+      raf = requestAnimationFrame(render)
+    }
+
+    resize()
+    render(0)
+    window.addEventListener('resize', resize)
+    window.addEventListener('mousemove', move)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', resize)
+      window.removeEventListener('mousemove', move)
+    }
+  }, [])
+
+  return <canvas ref={canvasRef} className="neural-canvas" aria-hidden="true" />
+}
+
+function Header() {
+  return (
+    <header className="header">
+      <a href="#top" className="logo" aria-label="To,Do">
+        <span className="logo-mark">✓</span>
+        <span>To<b>,</b>Do</span>
+      </a>
+      <nav>
+        <a href="#experience">Experiência</a>
+        <a href="#solutions">Soluções</a>
+        <a href="#ecosystem">Ecossistema</a>
+        <a href="#contact">Contato</a>
+      </nav>
+      <a className="nav-cta" href="#contact">Começar</a>
+    </header>
+  )
+}
+
+function Hero() {
+  const { scrollYProgress } = useScroll()
+  const y = useTransform(scrollYProgress, [0, 0.25], [0, -90])
+  const scale = useTransform(scrollYProgress, [0, 0.25], [1, 0.86])
+
+  return (
+    <section id="top" className="hero section-shell">
+      <motion.div className="hero-copy" style={{ y }}>
+        <p className="eyebrow"><Sparkles size={16} /> Desenvolvimento inteligente</p>
+        <h1>Construímos sistemas que fazem sua operação parecer viva.</h1>
+        <p className="lead">
+          A To,Do transforma processos manuais em experiências digitais inteligentes: automação, IA, dados e interfaces que evoluem com o negócio.
+        </p>
+        <div className="hero-actions">
+          <a className="primary" href="#contact">Desenhar minha automação <ArrowRight size={18} /></a>
+          <a className="secondary" href="#experience">Ver experiência</a>
+        </div>
+        <div className="micro-grid">
+          <div><strong>Processos</strong><span>mapeados e automatizados</span></div>
+          <div><strong>Dados</strong><span>visíveis em tempo real</span></div>
+          <div><strong>IA</strong><span>aplicada à operação</span></div>
+        </div>
+      </motion.div>
+
+      <motion.div className="system-stage" style={{ scale }}>
+        <div className="orbit orbit-a" />
+        <div className="orbit orbit-b" />
+        <div className="orbit orbit-c" />
+        <motion.div className="system-core" animate={{ rotate: [0, 4, -4, 0] }} transition={{ duration: 7, repeat: Infinity }}>
+          <Cpu size={62} />
+        </motion.div>
+        <motion.div className="stage-node node-a" animate={{ y: [0, -18, 0] }} transition={{ duration: 5, repeat: Infinity }}><BrainCircuit /></motion.div>
+        <motion.div className="stage-node node-b" animate={{ x: [0, 16, 0] }} transition={{ duration: 5.6, repeat: Infinity }}><Network /></motion.div>
+        <motion.div className="stage-node node-c" animate={{ y: [0, 14, 0] }} transition={{ duration: 4.8, repeat: Infinity }}><Gauge /></motion.div>
+        <motion.div className="stage-node node-d" animate={{ x: [0, -14, 0] }} transition={{ duration: 6.4, repeat: Infinity }}><ShieldCheck /></motion.div>
+        <motion.div className="console console-a" initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+          <span>fluxo automatizado</span><strong>82%</strong><i><em style={{ width: '82%' }} /></i>
+        </motion.div>
+        <motion.div className="console console-b" initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }}>
+          <span>retrabalho reduzido</span><strong>64%</strong><i><em style={{ width: '64%' }} /></i>
+        </motion.div>
+      </motion.div>
+    </section>
+  )
+}
+
+function Experience() {
+  return (
+    <section id="experience" className="scrolly">
+      <div className="sticky-visual">
+        <div className="story-screen">
+          <div className="screen-header"><span /> <span /> <span /></div>
+          <div className="flow-map">
+            <motion.div className="flow-dot f1" animate={{ scale: [1, 1.35, 1] }} transition={{ duration: 2.6, repeat: Infinity }} />
+            <motion.div className="flow-dot f2" animate={{ scale: [1, 1.35, 1] }} transition={{ duration: 2.8, repeat: Infinity, delay: .4 }} />
+            <motion.div className="flow-dot f3" animate={{ scale: [1, 1.35, 1] }} transition={{ duration: 3, repeat: Infinity, delay: .8 }} />
+            <div className="flow-line one" />
+            <div className="flow-line two" />
+            <div className="signal-card top"><Layers3 size={18}/> Processos</div>
+            <div className="signal-card mid"><BrainCircuit size={18}/> IA</div>
+            <div className="signal-card bottom"><ChartNoAxesCombined size={18}/> Decisão</div>
+          </div>
+        </div>
+      </div>
+      <div className="story-copy">
+        {chapters.map(([title, text], index) => (
+          <motion.article className="chapter" key={title} initial={{ opacity: 0, y: 80 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ amount: 0.55 }}>
+            <span>0{index + 1}</span>
+            <h2>{title}</h2>
+            <p>{text}</p>
+          </motion.article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function Services() {
+  return (
+    <section id="solutions" className="section-shell block-section">
+      <div className="section-heading">
+        <p className="eyebrow"><Orbit size={16} /> Soluções</p>
+        <h2>Não entregamos apenas telas. Entregamos fluxo, controle e evolução.</h2>
+      </div>
+      <div className="service-grid">
+        {services.map(([num, title, text, Icon], index) => (
+          <motion.article className="service-card" key={title} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.08 }} viewport={{ once: true }} whileHover={{ y: -10 }}>
+            <span>{num}</span>
+            <div className="icon-box"><Icon /></div>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </motion.article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function Ecosystem() {
+  const modules = ['Atendimento', 'Operação', 'Dados', 'IA', 'Financeiro', 'Gestão']
+  return (
+    <section id="ecosystem" className="section-shell ecosystem-section">
+      <div>
+        <p className="eyebrow"><MousePointer2 size={16} /> Ecossistema To,Do</p>
+        <h2>Uma camada inteligente por cima da sua empresa.</h2>
+        <p>
+          Imagine cada área conectada a um núcleo operacional: dados entram, processos rodam, alertas aparecem e decisões ficam mais simples.
+        </p>
+      </div>
+      <div className="ecosystem-board">
+        <div className="ecosystem-core"><Zap size={34} /> To,Do OS</div>
+        {modules.map((module, index) => (
+          <motion.div className={`eco-module eco-${index}`} key={module} animate={{ y: [0, -10, 0] }} transition={{ duration: 4 + index * 0.25, repeat: Infinity }}>
+            {module}
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function Contact() {
+  return (
+    <section id="contact" className="section-shell contact-section">
+      <motion.div className="contact-card" initial={{ opacity: 0, scale: .95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
+        <p className="eyebrow"><Sparkles size={16} /> Próximo passo</p>
+        <h2>Sua empresa ainda opera no manual?</h2>
+        <p>Vamos transformar sua operação em um sistema mais conectado, automatizado e inteligente.</p>
+        <a className="primary" href="mailto:contato@todo.com.br?subject=Quero%20automatizar%20minha%20empresa">Falar com a To,Do <ArrowRight size={18} /></a>
+      </motion.div>
+    </section>
+  )
+}
+
+function App() {
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 600)
+    return () => clearTimeout(timer)
+  }, [])
+
+  return (
+    <>
+      <NeuralBackground />
+      <div className="ambient" />
+      <motion.div className="loader" animate={{ opacity: ready ? 0 : 1, pointerEvents: ready ? 'none' : 'auto' }}>
+        <span>To,Do</span>
+        <i />
+      </motion.div>
+      <Header />
+      <main>
+        <Hero />
+        <Experience />
+        <Services />
+        <Ecosystem />
+        <Contact />
+      </main>
+      <footer className="footer section-shell">To,Do — Automatize. Conecte. Evolua.</footer>
+    </>
+  )
+}
+
+createRoot(document.getElementById('root')).render(<App />)
