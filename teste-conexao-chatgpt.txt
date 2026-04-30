@@ -1,1 +1,0 @@
-Teste de conexao do ChatGPT com o repositorio da To Do.
