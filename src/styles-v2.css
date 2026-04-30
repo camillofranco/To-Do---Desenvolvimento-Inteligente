@@ -1,1 +1,55 @@
-/* styles v2 loaded */ body{background:#02030b;color:#fff;font-family:Inter,sans-serif}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background: #02030b;
+  color: #fff;
+}
+
+/* NAV */
+.nav {
+  position: fixed;
+  top: 20px;
+  left: 30px;
+  right: 30px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+/* HERO */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0 5%;
+}
+
+.hero h1 {
+  font-size: 80px;
+  line-height: 0.9;
+}
+
+/* SERVICES */
+.serviceStack {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 100px 5%;
+}
+
+.service {
+  min-height: 70vh;
+  border-radius: 30px;
+  padding: 40px;
+  background: linear-gradient(135deg, #081022, #0d1c2e);
+}
+
+/* SMOKE */
+.smoke {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
