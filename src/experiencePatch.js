@@ -1,8 +1,8 @@
 const WA = 'https://wa.me/5511920787813?text=Ol%C3%A1%2C%20quero%20construir%20um%20projeto%20premium%20com%20a%20To%2CDo.'
 
 const css = `
-  .smoke{display:none!important}
-  #dense-smoke{position:fixed;inset:0;z-index:70;pointer-events:none;mix-blend-mode:screen;filter:blur(2.4px) saturate(1.8) contrast(1.08)}
+  #dense-smoke{position:fixed;inset:0;z-index:12;pointer-events:none;mix-blend-mode:screen;filter:blur(5px) saturate(1.25);opacity:.58}
+  .smoke{opacity:.18!important;z-index:11!important;filter:blur(4px) saturate(1.2)!important}
   .studio{height:auto!important;min-height:auto!important;padding-top:120px!important;padding-bottom:80px!important}
   .sticky{position:relative!important;top:auto!important;height:auto!important;overflow:visible!important;display:grid!important;grid-template-columns:.92fr 1.08fr!important;align-items:stretch!important;gap:28px!important}
   .story{width:100%!important;display:grid!important;grid-template-columns:1fr!important;gap:18px!important;transform:none!important}
@@ -21,7 +21,7 @@ const css = `
   .method{align-items:start!important}
   .method .timeline article{min-height:190px!important;padding:34px!important;border-radius:34px!important;background:linear-gradient(135deg,rgba(8,13,29,.78),rgba(37,14,54,.48))!important}
   .contact .primary{background:linear-gradient(135deg,#25d366,#5cf4ff)!important;color:#02100a!important}
-  @media(max-width:980px){.sticky,.card{grid-template-columns:1fr!important}.stage{position:relative!important;top:auto!important}.card .icon{grid-row:auto}.card>span{position:relative!important;top:auto!important;left:auto!important}}
+  @media(max-width:980px){#dense-smoke{display:none}.sticky,.card{grid-template-columns:1fr!important}.stage{position:relative!important;top:auto!important}.card .icon{grid-row:auto}.card>span{position:relative!important;top:auto!important;left:auto!important}}
 `
 
 document.head.appendChild(Object.assign(document.createElement('style'), { textContent: css }))
@@ -34,21 +34,23 @@ function linkWhatsApp(){
 }
 
 function startSmoke(){
+  const existing = document.getElementById('dense-smoke')
+  if(existing) existing.remove()
   const c=document.createElement('canvas')
   c.id='dense-smoke'
   document.body.appendChild(c)
   const ctx=c.getContext('2d')
   let dpr=1, parts=[], hue=185, last=0
-  function resize(){dpr=Math.min(devicePixelRatio||1,1.6);c.width=innerWidth*dpr;c.height=innerHeight*dpr;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+  function resize(){dpr=Math.min(devicePixelRatio||1,1.25);c.width=innerWidth*dpr;c.height=innerHeight*dpr;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
   function move(e){
-    const now=performance.now(); if(now-last<8)return; last=now; hue=(hue+5)%360
-    for(let i=0;i<18;i++) parts.push({x:e.clientX+(Math.random()-.5)*34,y:e.clientY+(Math.random()-.5)*34,vx:(Math.random()-.5)*.9,vy:(Math.random()-.5)*.9,r:42+Math.random()*115,life:1,h:hue+Math.random()*90})
-    if(parts.length>780) parts=parts.slice(-780)
+    const now=performance.now(); if(now-last<18)return; last=now; hue=(hue+4)%360
+    for(let i=0;i<4;i++) parts.push({x:e.clientX+(Math.random()-.5)*18,y:e.clientY+(Math.random()-.5)*18,vx:(Math.random()-.5)*.55,vy:(Math.random()-.5)*.55,r:24+Math.random()*48,life:.72,h:hue+Math.random()*65})
+    if(parts.length>120) parts=parts.slice(-120)
   }
   function loop(){
-    ctx.globalCompositeOperation='source-over'; ctx.fillStyle='rgba(5,2,15,.028)'; ctx.fillRect(0,0,innerWidth,innerHeight)
-    ctx.globalCompositeOperation='lighter'; parts=parts.filter(p=>p.life>.035)
-    for(const p of parts){p.x+=p.vx;p.y+=p.vy;p.vx*=.992;p.vy*=.992;p.r*=1.004;p.life*=.982;const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);g.addColorStop(0,`hsla(${p.h},100%,70%,${p.life*.15})`);g.addColorStop(.28,`hsla(${p.h+35},100%,58%,${p.life*.085})`);g.addColorStop(.7,`hsla(${p.h+70},100%,50%,${p.life*.035})`);g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}
+    ctx.clearRect(0,0,innerWidth,innerHeight)
+    ctx.globalCompositeOperation='screen'; parts=parts.filter(p=>p.life>.04)
+    for(const p of parts){p.x+=p.vx;p.y+=p.vy;p.vx*=.985;p.vy*=.985;p.r*=1.01;p.life*=.94;const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);g.addColorStop(0,`hsla(${p.h},100%,72%,${p.life*.10})`);g.addColorStop(.35,`hsla(${p.h+35},100%,58%,${p.life*.05})`);g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}
     requestAnimationFrame(loop)
   }
   resize(); addEventListener('resize',resize); addEventListener('mousemove',move,{passive:true}); loop()
