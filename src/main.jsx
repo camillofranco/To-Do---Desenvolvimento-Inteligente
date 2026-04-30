@@ -2,183 +2,213 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion'
 import * as THREE from 'three'
-import { ArrowRight, Bot, BrainCircuit, ChartNoAxesCombined, Check, Code2, Cpu, DatabaseZap, Fingerprint, Globe2, Layers3, Network, Orbit, Palette, ShieldCheck, Sparkles, Store, Workflow, Zap } from 'lucide-react'
+import { ArrowRight, Bot, BrainCircuit, ChartNoAxesCombined, CheckCircle2, Code2, Cpu, DatabaseZap, Globe2, MousePointer2, Palette, RadioTower, Sparkles, Store, Workflow, Zap } from 'lucide-react'
 import './styles.css'
 
 const services = [
-  { n: '01', title: 'Sites profissionais', text: 'Landing pages, sites institucionais e experiências premium com visual de marca grande, SEO e performance.', icon: Globe2 },
-  { n: '02', title: 'WebApps e sistemas', text: 'Portais, dashboards, CRMs, ferramentas internas e sistemas sob medida para operação real.', icon: Code2 },
-  { n: '03', title: 'Automação de processos', text: 'Fluxos que executam tarefas repetitivas, conectam dados e reduzem falhas operacionais.', icon: Workflow },
-  { n: '04', title: 'Agentes de IA', text: 'IA para atendimento, análise de documentos, triagem, organização e execução assistida.', icon: Bot },
-  { n: '05', title: 'Dashboards inteligentes', text: 'Painéis vivos para indicadores, gargalos, alertas e visão executiva da operação.', icon: ChartNoAxesCombined },
-  { n: '06', title: 'Branding digital', text: 'Direção visual, identidade aplicada e design system para marcas que precisam parecer referência.', icon: Palette },
-  { n: '07', title: 'Integrações', text: 'Planilhas, APIs, formulários, bancos e sistemas conversando dentro da mesma arquitetura.', icon: DatabaseZap },
-  { n: '08', title: 'E-commerce e funis', text: 'Estruturas de venda, páginas de conversão, campanhas e jornadas digitais de aquisição.', icon: Store }
+  { n: '01', title: 'Sites profissionais', text: 'Sites institucionais, landing pages e experiências digitais com design premium, SEO técnico e narrativa comercial.', icon: Globe2 },
+  { n: '02', title: 'WebApps e sistemas', text: 'Portais, CRMs, dashboards, áreas de cliente e sistemas internos desenhados para processos reais.', icon: Code2 },
+  { n: '03', title: 'Automação operacional', text: 'Rotinas, integrações, alertas e fluxos que reduzem esforço manual e retrabalho.', icon: Workflow },
+  { n: '04', title: 'Agentes de IA', text: 'Assistentes para atendimento, triagem, análise, documentos, relatórios e execução assistida.', icon: Bot },
+  { n: '05', title: 'Dashboards vivos', text: 'Indicadores, gráficos, monitoramento, gargalos e visão executiva em tempo real.', icon: ChartNoAxesCombined },
+  { n: '06', title: 'Branding digital', text: 'Direção visual, identidade aplicada, design system e linguagem para marcas que querem parecer referência.', icon: Palette },
+  { n: '07', title: 'Integrações de dados', text: 'APIs, planilhas, bancos de dados, formulários e sistemas conectados em uma arquitetura única.', icon: DatabaseZap },
+  { n: '08', title: 'Funis e conversão', text: 'Páginas, campanhas, jornadas e estruturas digitais para transformar atenção em venda.', icon: Store }
 ]
 
-const cases = [
-  ['Site premium', 'Experiência visual com narrativa, movimento, SEO e CTA claro.'],
-  ['Portal interno', 'Acesso por usuários, dashboards, permissões e fluxo operacional.'],
-  ['Automação IA', 'Rotinas manuais convertidas em agentes, validações e integrações.']
+const manifesto = [
+  ['01', 'Visual não é decoração.', 'É percepção de valor. Um site precisa fazer a empresa parecer mais forte antes mesmo da primeira reunião.'],
+  ['02', 'Interação não é enfeite.', 'É narrativa. A pessoa precisa sentir que está navegando por um produto vivo, não por um folder digital.'],
+  ['03', 'Automação não é moda.', 'É operação. O que se repete deve ser sistematizado, medido, melhorado e conectado.']
 ]
 
-function WebGLScene() {
-  const mountRef = useRef(null)
-
+function FluidWebGL() {
+  const ref = useRef(null)
   useEffect(() => {
-    const mount = mountRef.current
+    const mount = ref.current
     const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000)
-    camera.position.z = 7
+    const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 1000)
+    camera.position.z = 7.2
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-    renderer.setSize(window.innerWidth, window.innerHeight)
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2))
+    renderer.setSize(innerWidth, innerHeight)
     mount.appendChild(renderer.domElement)
 
     const group = new THREE.Group()
     scene.add(group)
 
-    const count = 520
+    const count = 1800
     const positions = new Float32Array(count * 3)
     const colors = new Float32Array(count * 3)
+    const speeds = new Float32Array(count)
+
     for (let i = 0; i < count; i++) {
-      const radius = 1.5 + Math.random() * 3.2
-      const theta = Math.random() * Math.PI * 2
-      const phi = Math.acos(2 * Math.random() - 1)
-      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta)
-      positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta)
-      positions[i * 3 + 2] = radius * Math.cos(phi)
-      colors[i * 3] = 0.15
-      colors[i * 3 + 1] = 0.65 + Math.random() * 0.25
+      const lane = Math.random() > 0.55 ? 1 : -1
+      const r = 1.3 + Math.random() * 4.6
+      const a = Math.random() * Math.PI * 2
+      positions[i * 3] = Math.cos(a) * r + (Math.random() - 0.5) * 1.6
+      positions[i * 3 + 1] = Math.sin(a) * r * 0.58 + (Math.random() - 0.5) * 1.6
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 4.8
+      colors[i * 3] = lane > 0 ? 0.12 : 0.48
+      colors[i * 3 + 1] = lane > 0 ? 0.84 : 0.25
       colors[i * 3 + 2] = 1
+      speeds[i] = lane * (0.006 + Math.random() * 0.024)
     }
 
     const geometry = new THREE.BufferGeometry()
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+    const material = new THREE.PointsMaterial({ size: 0.026, vertexColors: true, transparent: true, opacity: 0.92 })
+    const cloud = new THREE.Points(geometry, material)
+    group.add(cloud)
 
-    const material = new THREE.PointsMaterial({ size: 0.035, vertexColors: true, transparent: true, opacity: 0.9 })
-    const points = new THREE.Points(geometry, material)
-    group.add(points)
-
-    const linePositions = []
-    for (let i = 0; i < 160; i++) {
-      const a = Math.floor(Math.random() * count)
-      const b = Math.floor(Math.random() * count)
-      linePositions.push(positions[a * 3], positions[a * 3 + 1], positions[a * 3 + 2])
-      linePositions.push(positions[b * 3], positions[b * 3 + 1], positions[b * 3 + 2])
+    const curves = []
+    for (let i = 0; i < 32; i++) {
+      const curve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-4.5 + Math.random() * 2, -2 + Math.random() * 4, -1 + Math.random() * 2),
+        new THREE.Vector3(-1.5 + Math.random() * 3, -1.6 + Math.random() * 3.2, -1 + Math.random() * 2),
+        new THREE.Vector3(1.3 + Math.random() * 3, -1.8 + Math.random() * 3.6, -1 + Math.random() * 2),
+        new THREE.Vector3(4.5 - Math.random() * 2, -2 + Math.random() * 4, -1 + Math.random() * 2)
+      ])
+      const tube = new THREE.TubeGeometry(curve, 72, 0.005, 6, false)
+      const mat = new THREE.MeshBasicMaterial({ color: i % 2 ? 0x72e7ff : 0x7c5cff, transparent: true, opacity: 0.16 })
+      const mesh = new THREE.Mesh(tube, mat)
+      mesh.userData.speed = 0.008 + Math.random() * 0.02
+      mesh.userData.phase = Math.random() * Math.PI * 2
+      curves.push(mesh)
+      group.add(mesh)
     }
-    const lineGeometry = new THREE.BufferGeometry()
-    lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3))
-    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x58b6ff, transparent: true, opacity: 0.14 })
-    const lines = new THREE.LineSegments(lineGeometry, lineMaterial)
-    group.add(lines)
-
-    const torus = new THREE.Mesh(
-      new THREE.TorusGeometry(2.3, 0.008, 16, 160),
-      new THREE.MeshBasicMaterial({ color: 0x72e7ff, transparent: true, opacity: 0.45 })
-    )
-    const torus2 = torus.clone()
-    torus2.rotation.x = Math.PI / 2
-    group.add(torus, torus2)
 
     const mouse = { x: 0, y: 0 }
-    const onMove = (e) => {
-      mouse.x = (e.clientX / window.innerWidth - 0.5) * 0.8
-      mouse.y = (e.clientY / window.innerHeight - 0.5) * 0.8
+    const move = e => {
+      mouse.x = (e.clientX / innerWidth - 0.5) * 2
+      mouse.y = (e.clientY / innerHeight - 0.5) * 2
     }
-    const onResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight
+    const resize = () => {
+      camera.aspect = innerWidth / innerHeight
       camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
+      renderer.setSize(innerWidth, innerHeight)
     }
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('resize', onResize)
+    addEventListener('mousemove', move)
+    addEventListener('resize', resize)
 
     let raf
-    const tick = () => {
-      group.rotation.y += 0.0025
-      group.rotation.x += 0.001
-      group.rotation.y += (mouse.x - group.rotation.y * 0.06) * 0.004
-      group.rotation.x += (-mouse.y - group.rotation.x * 0.06) * 0.004
-      points.rotation.z += 0.0015
-      lines.rotation.z -= 0.0008
-      torus.rotation.z += 0.003
-      torus2.rotation.y += 0.002
+    const tick = t => {
+      const pos = geometry.attributes.position.array
+      for (let i = 0; i < count; i++) {
+        const ix = i * 3
+        const x = pos[ix]
+        const y = pos[ix + 1]
+        const a = Math.atan2(y, x) + speeds[i] * 5.5
+        const r = Math.hypot(x, y)
+        pos[ix] = Math.cos(a) * r
+        pos[ix + 1] = Math.sin(a) * r
+        pos[ix + 2] += speeds[i] * 7
+        if (pos[ix + 2] > 3.2) pos[ix + 2] = -3.2
+        if (pos[ix + 2] < -3.2) pos[ix + 2] = 3.2
+      }
+      geometry.attributes.position.needsUpdate = true
+      group.rotation.y += (mouse.x * 0.28 - group.rotation.y) * 0.035
+      group.rotation.x += (-mouse.y * 0.18 - group.rotation.x) * 0.035
+      cloud.rotation.z += 0.0025
+      curves.forEach((mesh, index) => {
+        mesh.rotation.z += mesh.userData.speed
+        mesh.position.y = Math.sin(t * 0.001 + mesh.userData.phase) * 0.1
+        mesh.material.opacity = 0.10 + Math.sin(t * 0.002 + index) * 0.04 + 0.08
+      })
       renderer.render(scene, camera)
       raf = requestAnimationFrame(tick)
     }
-    tick()
+    tick(0)
 
     return () => {
       cancelAnimationFrame(raf)
-      window.removeEventListener('mousemove', onMove)
-      window.removeEventListener('resize', onResize)
+      removeEventListener('mousemove', move)
+      removeEventListener('resize', resize)
       mount.removeChild(renderer.domElement)
       geometry.dispose()
-      lineGeometry.dispose()
       material.dispose()
-      lineMaterial.dispose()
+      curves.forEach(mesh => { mesh.geometry.dispose(); mesh.material.dispose() })
       renderer.dispose()
     }
   }, [])
-
-  return <div className="webgl" ref={mountRef} aria-hidden="true" />
+  return <div className="webgl" ref={ref} />
 }
 
-function PointerGlow() {
-  const x = useMotionValue(-300)
-  const y = useMotionValue(-300)
-  const sx = useSpring(x, { stiffness: 130, damping: 24 })
-  const sy = useSpring(y, { stiffness: 130, damping: 24 })
+function SmokeCursor() {
+  const canvas = useRef(null)
   useEffect(() => {
-    const move = (event) => {
-      x.set(event.clientX - 260)
-      y.set(event.clientY - 260)
-      document.documentElement.style.setProperty('--mx', `${(event.clientX / innerWidth) * 100}%`)
-      document.documentElement.style.setProperty('--my', `${(event.clientY / innerHeight) * 100}%`)
+    const c = canvas.current
+    const ctx = c.getContext('2d')
+    let particles = []
+    let hue = 190
+    const resize = () => { c.width = innerWidth; c.height = innerHeight }
+    const move = e => {
+      hue = (hue + 4) % 360
+      for (let i = 0; i < 9; i++) {
+        particles.push({
+          x: e.clientX + (Math.random() - 0.5) * 18,
+          y: e.clientY + (Math.random() - 0.5) * 18,
+          vx: (Math.random() - 0.5) * 2.2,
+          vy: (Math.random() - 0.5) * 2.2,
+          r: 18 + Math.random() * 44,
+          life: 1,
+          hue: hue + Math.random() * 36
+        })
+      }
+      document.documentElement.style.setProperty('--mx', `${(e.clientX / innerWidth) * 100}%`)
+      document.documentElement.style.setProperty('--my', `${(e.clientY / innerHeight) * 100}%`)
     }
-    window.addEventListener('mousemove', move)
-    return () => window.removeEventListener('mousemove', move)
-  }, [x, y])
-  return <motion.div className="pointer-glow" style={{ x: sx, y: sy }} />
+    const loop = () => {
+      ctx.clearRect(0, 0, c.width, c.height)
+      ctx.globalCompositeOperation = 'lighter'
+      particles = particles.filter(p => p.life > 0.02).slice(-260)
+      for (const p of particles) {
+        p.x += p.vx
+        p.y += p.vy
+        p.r *= 1.018
+        p.life *= 0.94
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r)
+        g.addColorStop(0, `hsla(${p.hue}, 100%, 68%, ${p.life * 0.18})`)
+        g.addColorStop(0.38, `hsla(${p.hue + 22}, 100%, 58%, ${p.life * 0.08})`)
+        g.addColorStop(1, `hsla(${p.hue + 40}, 100%, 50%, 0)`)
+        ctx.fillStyle = g
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      requestAnimationFrame(loop)
+    }
+    resize(); loop()
+    addEventListener('resize', resize)
+    addEventListener('mousemove', move)
+    return () => { removeEventListener('resize', resize); removeEventListener('mousemove', move) }
+  }, [])
+  return <canvas ref={canvas} className="smoke" />
 }
 
 function Header() {
-  return <header className="nav-bar"><a className="brand" href="#top"><span>✓</span>To<b>,</b>Do</a><nav><a href="#story">Experiência</a><a href="#services">Serviços</a><a href="#method">Método</a><a href="#contact">Contato</a></nav><a href="#contact" className="small-cta">Construir projeto</a></header>
+  return <header className="nav"><a className="brand" href="#top"><span>To<b>,</b>Do</span></a><div><a href="#studio">Studio</a><a href="#services">Serviços</a><a href="#method">Método</a><a href="#contact">Contato</a></div><a className="navCta" href="#contact">Começar projeto</a></header>
 }
 
 function Hero() {
   const { scrollYProgress } = useScroll()
-  const y = useTransform(scrollYProgress, [0, 0.22], [0, -120])
-  const opacity = useTransform(scrollYProgress, [0, 0.22], [1, 0.35])
-  return <section id="top" className="hero-shell"><motion.div className="hero-copy" style={{ y, opacity }}><p className="eyebrow"><Sparkles size={16}/> Desenvolvimento inteligente para marcas e operações</p><h1>Sites, sistemas e automações com experiência de produto global.</h1><p className="lead">A To,Do cria sites profissionais, interfaces premium, webapps, agentes de IA, dashboards e automações para empresas que querem parecer maiores, vender melhor e operar com mais inteligência.</p><div className="hero-actions"><a href="#services" className="primary">Explorar serviços <ArrowRight size={18}/></a><a href="#story" className="secondary">Ver experiência</a></div></motion.div><SystemDeck/><div className="scroll-hint"><span>scroll</span><i/></div></section>
+  const y = useTransform(scrollYProgress, [0, .22], [0, -120])
+  const opacity = useTransform(scrollYProgress, [0, .22], [1, .25])
+  return <section id="top" className="hero"><motion.div className="heroText" style={{ y, opacity }}><p className="eyebrow"><Sparkles size={16}/> websites, systems & intelligent automation</p><h1>Experiências digitais que fazem sua empresa parecer anos à frente.</h1><p className="lead">Criamos sites profissionais, WebApps, automações, agentes de IA, dashboards e ecossistemas digitais com estética premium, movimento, performance e clareza comercial.</p><div className="actions"><a className="primary" href="#services">Explorar soluções <ArrowRight size={18}/></a><a className="secondary" href="#studio">Ver experiência</a></div></motion.div><motion.div className="heroPanel" initial={{opacity:0,scale:.92}} animate={{opacity:1,scale:1}} transition={{duration:1}}><div className="orb o1"/><div className="orb o2"/><div className="orb o3"/><div className="engine"><Cpu size={56}/><strong>To,Do Engine</strong></div><div className="chip c1">Sites premium</div><div className="chip c2">WebApps</div><div className="chip c3">IA</div><div className="chip c4">Dashboards</div></motion.div></section>
 }
 
-function SystemDeck() {
-  return <motion.div className="deck" initial={{ opacity: 0, scale: .94 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1 }}><div className="deck-orbit o1"/><div className="deck-orbit o2"/><div className="deck-orbit o3"/><div className="deck-core"><Cpu size={64}/><strong>To,Do Engine</strong></div><Floating className="d-a" icon={<Globe2/>} label="Sites"/><Floating className="d-b" icon={<BrainCircuit/>} label="IA"/><Floating className="d-c" icon={<ChartNoAxesCombined/>} label="Dados"/><Floating className="d-d" icon={<ShieldCheck/>} label="Controle"/><motion.div className="deck-panel p-a" animate={{ y: [0,-12,0] }} transition={{ repeat: Infinity, duration: 4.8 }}><span>percepção de marca</span><strong>10x</strong></motion.div><motion.div className="deck-panel p-b" animate={{ y: [0,12,0] }} transition={{ repeat: Infinity, duration: 5.2 }}><span>operação manual</span><strong>-64%</strong></motion.div></motion.div>
-}
-function Floating({ className, icon, label }) { return <motion.div className={`floating ${className}`} animate={{ y: [0, -16, 0] }} transition={{ repeat: Infinity, duration: 5.4 }}>{icon}<span>{label}</span></motion.div> }
-
-function Story() {
-  const target = useRef(null)
-  const { scrollYProgress } = useScroll({ target, offset: ['start start', 'end end'] })
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-45%'])
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, 80])
-  return <section id="story" ref={target} className="story-section"><div className="story-sticky"><motion.div className="story-visual" style={{ rotate }}><div className="visual-grid"/><div className="story-main"><span>LIVE DIGITAL ECOSYSTEM</span><strong>Brand → Product → Operation → Intelligence</strong></div><div className="mini m1">site premium</div><div className="mini m2">webapp</div><div className="mini m3">IA</div><div className="mini m4">dados</div></motion.div><motion.div className="story-copy-row" style={{ x }}><article><span>01 / Marca</span><h2>Primeiro, a empresa precisa parecer inevitável.</h2><p>Sites genéricos não posicionam. Criamos presença digital com narrativa, estética, movimento e clareza comercial.</p></article><article><span>02 / Produto</span><h2>Depois, a experiência precisa ser útil.</h2><p>Transformamos ideias em interfaces, sistemas, portais e fluxos que resolvem problemas reais.</p></article><article><span>03 / Operação</span><h2>Por fim, o processo precisa trabalhar sozinho.</h2><p>Automação, IA, integrações e dashboards conectam a empresa em uma camada operacional inteligente.</p></article></motion.div></div></section>
+function Studio() {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start','end end'] })
+  const x = useTransform(scrollYProgress, [0,1], ['0%','-44%'])
+  return <section id="studio" ref={ref} className="studio"><div className="sticky"><div className="stage"><div className="scan"/><div className="stageCore"><span>LIVE STUDIO</span><strong>Brand → Experience → System → Intelligence</strong></div><div className="tag t1">UI motion</div><div className="tag t2">WebGL</div><div className="tag t3">Automação</div><div className="tag t4">IA</div></div><motion.div className="story" style={{x}}>{manifesto.map(([n,t,p])=><article key={n}><span>{n}</span><h2>{t}</h2><p>{p}</p></article>)}</motion.div></div></section>
 }
 
-function Services() {
-  return <section id="services" className="section services-section"><div className="section-head"><p className="eyebrow"><Orbit size={16}/> Serviços</p><h2>Uma stack criativa e técnica para construir empresas mais fortes.</h2><p>Do site ao sistema interno. Da identidade ao agente de IA. Da página comercial ao painel operacional.</p></div><div className="service-grid">{services.map(({n,title,text,icon:Icon},i)=><motion.article className="service-card" key={title} initial={{opacity:0,y:40}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.05}} whileHover={{y:-12}}><span>{n}</span><div className="service-icon"><Icon/></div><h3>{title}</h3><p>{text}</p><a href="#contact">solicitar <ArrowRight size={15}/></a></motion.article>)}</div></section>
-}
-
-function Cases() { return <section className="section cases-section"><div className="section-head"><p className="eyebrow"><Layers3 size={16}/> Construções possíveis</p><h2>Projetos que deixam de ser “site” e viram experiência.</h2></div><div className="case-grid">{cases.map(([t,p],i)=><motion.div className="case-card" key={t} whileHover={{scale:1.02}}><span>0{i+1}</span><h3>{t}</h3><p>{p}</p></motion.div>)}</div></section> }
-
-function Method() { const steps=[['Imersão','Entendemos negócio, oferta, público, operação e nível de maturidade digital.'],['Arquitetura','Desenhamos narrativa, experiência, stack, dados, automações e roadmap.'],['Construção','Criamos interface, animações, código, integrações e camada operacional.'],['Evolução','Medimos, refinamos e ampliamos o produto conforme o negócio cresce.']]; return <section id="method" className="section method-section"><div><p className="eyebrow"><Fingerprint size={16}/> Método</p><h2>Não começamos pelo layout. Começamos pelo sistema.</h2></div><div className="method-list">{steps.map(([t,p],i)=><motion.article className="method-item" key={t} initial={{opacity:0,x:40}} whileInView={{opacity:1,x:0}} viewport={{once:true}}><span>0{i+1}</span><h3>{t}</h3><p>{p}</p></motion.article>)}</div></section> }
-
-function Contact() { return <section id="contact" className="section contact-section"><motion.div className="contact-card" initial={{opacity:0,scale:.94}} whileInView={{opacity:1,scale:1}} viewport={{once:true}}><p className="eyebrow"><Check size={16}/> Projeto To,Do</p><h2>Vamos construir algo que pareça impossível para o seu mercado?</h2><p>Me chame para desenharmos um site, sistema, automação ou ecossistema completo com experiência visual de alto impacto.</p><a className="primary" href="mailto:contato@todo.com.br?subject=Quero%20construir%20um%20projeto%20com%20a%20ToDo">Começar projeto <ArrowRight size={18}/></a></motion.div></section> }
-
-function App(){const[loaded,setLoaded]=useState(false);useEffect(()=>{const t=setTimeout(()=>setLoaded(true),1000);return()=>clearTimeout(t)},[]);return <><WebGLScene/><PointerGlow/><div className="ambient"/><motion.div className="loader" animate={{opacity:loaded?0:1,pointerEvents:loaded?'none':'auto'}}><span>To,Do</span><i/></motion.div><Header/><main><Hero/><Story/><Services/><Cases/><Method/><Contact/></main><footer className="footer">To,Do — Automatize. Conecte. Evolua.</footer></>}
-
-createRoot(document.getElementById('root')).render(<App/>)
+function Services(){return <section id="services" className="section"><div className="head"><p className="eyebrow"><Orbit size={16}/> serviços</p><h2>Do site que vende ao sistema que opera.</h2><p>Construímos a presença, a experiência e a infraestrutura digital para empresas que precisam crescer com tecnologia.</p></div><div className="serviceGrid">{services.map(({n,title,text,icon:Icon},i)=><motion.article className="card" key={title} initial={{opacity:0,y:40}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay:i*.045}} whileHover={{y:-14}}><span>{n}</span><div className="icon"><Icon/></div><h3>{title}</h3><p>{text}</p><a href="#contact">solicitar <ArrowRight size={14}/></a></motion.article>)}</div></section>}
+function Showcase(){return <section className="section showcase"><p className="eyebrow"><RadioTower size={16}/> experiências possíveis</p><div className="showGrid"><motion.div className="wide" whileHover={{scale:1.015}}><h2>Site institucional que parece produto global.</h2><p>Hero cinematográfico, narrativa de venda, WebGL, SEO, performance e CTAs claros.</p></motion.div><motion.div whileHover={{scale:1.02}}><h3>Portal interno</h3><p>Usuários, permissões, dashboards e fluxo de trabalho.</p></motion.div><motion.div whileHover={{scale:1.02}}><h3>Agente IA</h3><p>Atendimento, análise, leitura e execução assistida.</p></motion.div></div></section>}
+function Method(){const steps=['Imersão estratégica','Narrativa e arquitetura','Design system e motion','Desenvolvimento e integrações','Automação, IA e deploy','Evolução contínua'];return <section id="method" className="section method"><div><p className="eyebrow"><MousePointer2 size={16}/> método</p><h2>Uma construção de produto, não um template.</h2></div><div className="timeline">{steps.map((s,i)=><article key={s}><span>0{i+1}</span><h3>{s}</h3><p>{i===0?'Entendemos mercado, oferta, público e operação.':'Cada etapa transforma estética, tecnologia e estratégia em uma experiência publicável.'}</p></article>)}</div></section>}
+function Contact(){return <section id="contact" className="section contact"><motion.div initial={{opacity:0,scale:.94}} whileInView={{opacity:1,scale:1}} viewport={{once:true}}><p className="eyebrow"><CheckCircle2 size={16}/> próximo passo</p><h2>Vamos construir o site que seus concorrentes vão usar como referência?</h2><p>Começamos por uma leitura do seu negócio e desenhamos uma experiência digital com visual, tecnologia e conversão.</p><a className="primary" href="mailto:contato@todo.com.br?subject=Quero%20um%20projeto%20premium%20com%20a%20ToDo">Começar agora <ArrowRight size={18}/></a></motion.div></section>}
+function App(){const[load,setLoad]=useState(true);useEffect(()=>{const t=setTimeout(()=>setLoad(false),1000);return()=>clearTimeout(t)},[]);return <><FluidWebGL/><SmokeCursor/><div className="ambient"/><motion.div className="loader" animate={{opacity:load?1:0,pointerEvents:load?'auto':'none'}}><span>To,Do</span><i/></motion.div><Header/><main><Hero/><Studio/><Services/><Showcase/><Method/><Contact/></main><footer>To,Do — Automatize. Conecte. Evolua.</footer></>}
+createRoot(document.getElementById('root')).render(<App/>);

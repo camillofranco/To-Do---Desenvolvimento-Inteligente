@@ -1,4 +1,4 @@
-name: Deploy React Experience to GitHub Pages
+name: Deploy ToDo WebGL Experience
 on:
   push:
     branches:
