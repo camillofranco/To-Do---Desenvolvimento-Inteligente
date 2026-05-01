@@ -144,11 +144,177 @@ input:focus {
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
+/* ==========================================
+   HEADER - Fixed Premium Navigation
+   ========================================== */
+
+.header-advanced {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  padding: var(--space-md) 0;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+.header-logo {
+  flex-shrink: 0;
+}
+
+.logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+  transition: var(--transition-fast);
+}
+
+.logo-img:hover {
+  filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
+  transform: scale(1.05);
+}
+
+.header-nav {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: center;
+  flex: 1;
+}
+
+.header-nav a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition-fast);
+  position: relative;
+}
+
+.header-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--secondary);
+  transition: width 0.3s ease;
+}
+
+.header-nav a:hover {
+  color: var(--secondary);
+}
+
+.header-nav a:hover::after {
+  width: 100%;
+}
+
+.header-cta {
+  flex-shrink: 0;
+}
+
+.btn-primary-small {
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: 0 10px 30px rgba(127, 90, 240, 0.3);
+}
+
+.btn-primary-small:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(127, 90, 240, 0.5);
+}
+
+.header-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--secondary);
+  cursor: pointer;
+  padding: var(--space-md);
+}
+
+/* ==========================================
+   FOOTER - Logo Integration
+   ========================================== */
+
+.footer-logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: var(--space-md);
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.2));
+  transition: var(--transition-fast);
+}
+
+.footer-logo:hover {
+  filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));
+  transform: scale(1.05);
+}
+
+.footer-advanced .footer-section:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 1024px) {
+  .header-nav {
+    display: none;
+  }
+
+  .header-nav.open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    padding: var(--space-lg);
+    gap: var(--space-md);
+  }
+
+  .header-menu-toggle {
+    display: block;
+  }
+}
+
 @media (max-width: 768px) {
   section {
     padding: var(--space-2xl) 0;
   }
   .container {
     padding: 0 var(--space-lg);
+  }
+
+  .header-content {
+    gap: var(--space-lg);
+  }
+
+  .header-logo {
+    flex: 1;
+  }
+
+  .header-cta {
+    display: none;
   }
 }

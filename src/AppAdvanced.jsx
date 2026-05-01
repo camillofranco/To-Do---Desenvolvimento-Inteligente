@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import HeaderAdvanced from './components/HeaderAdvanced'
 import HeroAdvanced from './components/HeroAdvanced'
 import FeaturesAdvanced from './components/FeaturesAdvanced'
 import AboutAdvanced from './components/AboutAdvanced'
@@ -65,6 +66,7 @@ export default function AppAdvanced() {
 
   return (
     <main className="app-advanced">
+      <HeaderAdvanced />
       <HeroAdvanced />
       <FeaturesAdvanced />
       <AboutAdvanced />

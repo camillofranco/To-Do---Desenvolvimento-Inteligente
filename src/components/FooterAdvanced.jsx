@@ -9,7 +9,7 @@ export default function FooterAdvanced() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-section">
-            <h4>To,Do</h4>
+            <img src="/logo.png" alt="To,Do" className="footer-logo" />
             <p>IA premium de próxima geração para atendimento ao cliente.</p>
           </div>
 
