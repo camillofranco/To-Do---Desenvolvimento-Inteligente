@@ -139,6 +139,17 @@
             to { opacity: 1; }
         }
 
+        @keyframes fadeInLetter {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .hero-content {
             position: relative;
             z-index: 10;
@@ -541,29 +552,33 @@
             Escolha a solução que sua empresa precisa. Ou combine várias. Temos expertise em todas.
         </p>
         <div class="grid-cards">
-            <div class="card">
-                <h3>🌐 Websites & Plataformas</h3>
+            <div class="card" style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 217, 255, 0.03));">
+                <h3 style="font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);">🌐</h3>
+                <h3>Websites & Plataformas</h3>
                 <p><strong style="color: #00FF88;">Problema:</strong> Site lento, sem conversão, desatualizado</p>
                 <p style="margin-top: 1rem;"><strong style="color: #00FF88;">Solução:</strong> Plataforma moderna integrada com IA. Chatbots inteligentes. 3-4x mais leads.</p>
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">→ Implementação em 4 semanas</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #00FF88; font-weight: 600;">→ Implementação em 4 semanas</p>
             </div>
-            <div class="card">
-                <h3>🤖 CRM Inteligente</h3>
+            <div class="card" style="background: linear-gradient(135deg, rgba(0, 217, 255, 0.08), rgba(184, 24, 255, 0.03));">
+                <h3 style="font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 0 0 20px rgba(0, 217, 255, 0.4);">🤖</h3>
+                <h3>CRM Inteligente</h3>
                 <p><strong style="color: #00FF88;">Problema:</strong> Clientes se perdem, processos manuais, sem acompanhamento</p>
                 <p style="margin-top: 1rem;"><strong style="color: #00FF88;">Solução:</strong> Automação completa. IA prevê oportunidades. Fecha mais deals.</p>
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">→ Produtividade +60% em 30 dias</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #00D9FF; font-weight: 600;">→ Produtividade +60% em 30 dias</p>
             </div>
-            <div class="card">
-                <h3>📊 ERP + IA</h3>
+            <div class="card" style="background: linear-gradient(135deg, rgba(184, 24, 255, 0.08), rgba(0, 255, 136, 0.03));">
+                <h3 style="font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 0 0 20px rgba(184, 24, 255, 0.4);">📊</h3>
+                <h3>ERP + IA</h3>
                 <p><strong style="color: #00FF88;">Problema:</strong> Dados espalhados, decisões lentas, custos altos</p>
                 <p style="margin-top: 1rem;"><strong style="color: #00FF88;">Solução:</strong> Controle total. Previsões precisas. Economia imediata.</p>
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">→ Economia de R$ 30k-100k/ano</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #B818FF; font-weight: 600;">→ Economia de R$ 30k-100k/ano</p>
             </div>
-            <div class="card">
-                <h3>🧠 Agentes IA</h3>
+            <div class="card" style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(184, 24, 255, 0.04));">
+                <h3 style="font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);">🧠</h3>
+                <h3>Agentes IA</h3>
                 <p><strong style="color: #00FF88;">Problema:</strong> Tarefas repetitivas roubam horas produtivas</p>
                 <p style="margin-top: 1rem;"><strong style="color: #00FF88;">Solução:</strong> Bots que trabalham 24/7. Suportam seu time. Nunca dormem.</p>
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">→ Libera 20-30 horas/semana da equipe</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #00FF88; font-weight: 600;">→ Libera 20-30 horas/semana da equipe</p>
             </div>
         </div>
     </section>
@@ -688,10 +703,20 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // HERO ANIMATIONS - Entrada sofisticada
+        // HERO ANIMATIONS - Entrada sofisticada com efeito letter-by-letter
+        // Primeiro, prepare para letter animation
+        let h1Text = document.querySelector('.hero h1');
+        if (h1Text) {
+            let originalText = h1Text.innerText;
+            h1Text.innerHTML = originalText
+                .split('')
+                .map((char, i) => `<span style="opacity: 0; display: inline-block; animation: fadeInLetter 0.6s ease-out forwards; animation-delay: ${0.2 + (i * 0.05)}s">${char === ' ' ? '&nbsp;' : char}</span>`)
+                .join('');
+        }
+
         gsap.fromTo('.hero h1',
-            { opacity: 0, y: 60, filter: 'blur(10px)' },
-            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, delay: 0.2 }
+            { y: 60, filter: 'blur(10px)' },
+            { y: 0, filter: 'blur(0px)', duration: 1, delay: 0.2 }
         );
 
         gsap.fromTo('.hero h2',
@@ -866,6 +891,20 @@
                         start: 'top 70%',
                         once: true
                     }
+                }
+            );
+        });
+
+        // FLOATING ICONS ANIMATION
+        gsap.utils.toArray('.grid-cards .card h3:first-child').forEach((icon, index) => {
+            gsap.to(icon,
+                {
+                    y: -15,
+                    duration: 2 + (index * 0.3),
+                    repeat: -1,
+                    yoyo: true,
+                    ease: 'sine.inOut',
+                    delay: index * 0.1
                 }
             );
         });
