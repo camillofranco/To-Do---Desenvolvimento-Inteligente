@@ -1,13 +1,12 @@
 import React, { useEffect, useRef } from 'react'
-import HeaderAdvanced from './components/HeaderAdvanced'
-import HeroAdvanced from './components/HeroAdvanced'
-import FeaturesAdvanced from './components/FeaturesAdvanced'
-import AboutAdvanced from './components/AboutAdvanced'
-import PricingAdvanced from './components/PricingAdvanced'
-import BlogAdvanced from './components/BlogAdvanced'
-import FAQAdvanced from './components/FAQAdvanced'
-import CTAAdvanced from './components/CTAAdvanced'
-import FooterAdvanced from './components/FooterAdvanced'
+import HeroRadical from './components/HeroRadical'
+import SolutionsRadical from './components/SolutionsRadical'
+import JourneyRadical from './components/JourneyRadical'
+import ProcessRadical from './components/ProcessRadical'
+import FormRadical from './components/FormRadical'
+import BenefitsRadical from './components/BenefitsRadical'
+import ContactRadical from './components/ContactRadical'
+import FooterRadical from './components/FooterRadical'
 import './styles-premium.css'
 import './hero-premium.css'
 
@@ -15,19 +14,19 @@ export default function AppAdvanced() {
   const cursorRef = useRef(null)
 
   useEffect(() => {
-    // Custom cursor premium
+    // Custom cursor radical
     const cursor = document.createElement('div')
     cursor.className = 'cursor'
     cursor.style.position = 'fixed'
     cursor.style.width = '24px'
     cursor.style.height = '24px'
-    cursor.style.border = '2px solid #D4AF37'
+    cursor.style.border = '2px solid #00FF88'
     cursor.style.borderRadius = '50%'
     cursor.style.pointerEvents = 'none'
     cursor.style.zIndex = '9999'
     cursor.style.mixBlendMode = 'screen'
     cursor.style.transition = 'width 0.3s, height 0.3s'
-    cursor.style.boxShadow = '0 0 20px rgba(212, 175, 55, 0.5)'
+    cursor.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.5)'
     document.body.appendChild(cursor)
 
     let mouseX = 0,
@@ -43,13 +42,13 @@ export default function AppAdvanced() {
     const handleMouseOver = () => {
       cursor.style.width = '32px'
       cursor.style.height = '32px'
-      cursor.style.boxShadow = '0 0 40px rgba(212, 175, 55, 0.8)'
+      cursor.style.boxShadow = '0 0 40px rgba(0, 255, 136, 0.8)'
     }
 
     const handleMouseOut = () => {
       cursor.style.width = '24px'
       cursor.style.height = '24px'
-      cursor.style.boxShadow = '0 0 20px rgba(212, 175, 55, 0.5)'
+      cursor.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.5)'
     }
 
     window.addEventListener('mousemove', handleMouseMove)
@@ -66,15 +65,14 @@ export default function AppAdvanced() {
 
   return (
     <main className="app-advanced">
-      <HeaderAdvanced />
-      <HeroAdvanced />
-      <FeaturesAdvanced />
-      <AboutAdvanced />
-      <PricingAdvanced />
-      <BlogAdvanced />
-      <FAQAdvanced />
-      <CTAAdvanced />
-      <FooterAdvanced />
+      <HeroRadical />
+      <SolutionsRadical />
+      <JourneyRadical />
+      <ProcessRadical />
+      <FormRadical />
+      <BenefitsRadical />
+      <ContactRadical />
+      <FooterRadical />
     </main>
   )
 }
