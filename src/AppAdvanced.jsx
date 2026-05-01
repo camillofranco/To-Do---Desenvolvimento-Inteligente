@@ -1,16 +1,20 @@
 import React, { useEffect, useRef } from 'react'
 import HeroAdvanced from './components/HeroAdvanced'
 import FeaturesAdvanced from './components/FeaturesAdvanced'
+import AboutAdvanced from './components/AboutAdvanced'
+import PricingAdvanced from './components/PricingAdvanced'
+import BlogAdvanced from './components/BlogAdvanced'
+import FAQAdvanced from './components/FAQAdvanced'
+import CTAAdvanced from './components/CTAAdvanced'
+import FooterAdvanced from './components/FooterAdvanced'
 import './styles-premium.css'
 import './hero-premium.css'
-import './features-premium.css'
 
 export default function AppAdvanced() {
   const cursorRef = useRef(null)
-  const cursorTrailRef = useRef(null)
 
   useEffect(() => {
-    // Custom cursor
+    // Custom cursor premium
     const cursor = document.createElement('div')
     cursor.className = 'cursor'
     cursor.style.position = 'fixed'
@@ -63,6 +67,12 @@ export default function AppAdvanced() {
     <main className="app-advanced">
       <HeroAdvanced />
       <FeaturesAdvanced />
+      <AboutAdvanced />
+      <PricingAdvanced />
+      <BlogAdvanced />
+      <FAQAdvanced />
+      <CTAAdvanced />
+      <FooterAdvanced />
     </main>
   )
 }
