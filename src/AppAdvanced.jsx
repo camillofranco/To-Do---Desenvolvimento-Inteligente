@@ -7,6 +7,7 @@ import FormRadical from './components/FormRadical'
 import BenefitsRadical from './components/BenefitsRadical'
 import ContactRadical from './components/ContactRadical'
 import FooterRadical from './components/FooterRadical'
+import './index.css'
 import './styles-premium.css'
 import './hero-premium.css'
 
