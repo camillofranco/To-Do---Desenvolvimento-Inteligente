@@ -15,6 +15,8 @@ export default function AppAdvanced() {
 
   useEffect(() => {
     // Custom cursor radical
+    if (!document.body) return
+
     const cursor = document.createElement('div')
     cursor.className = 'cursor'
     cursor.style.position = 'fixed'
@@ -59,7 +61,9 @@ export default function AppAdvanced() {
       window.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseenter', handleMouseOver)
       document.removeEventListener('mouseleave', handleMouseOut)
-      document.body.removeChild(cursor)
+      if (document.body && cursor.parentNode === document.body) {
+        document.body.removeChild(cursor)
+      }
     }
   }, [])
 
