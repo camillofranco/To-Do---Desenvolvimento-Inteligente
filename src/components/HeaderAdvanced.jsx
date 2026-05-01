@@ -9,7 +9,7 @@ export default function HeaderAdvanced() {
       <div className="container">
         <div className="header-content">
           <div className="header-logo">
-            <img src="/logo.png" alt="To,Do" className="logo-img" />
+            <img src="/To-Do---Desenvolvimento-Inteligente/logo.svg" alt="To,Do" className="logo-img" />
           </div>
 
           <nav className={`header-nav ${menuOpen ? 'open' : ''}`}>
