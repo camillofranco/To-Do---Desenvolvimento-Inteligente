@@ -1,0 +1,138 @@
+{
+  "theme_archetype": "Swiss Brutalist / High-Contrast Minimalist (Archetype 4) modified with Light Theme and Neon Accents",
+  "brand_name": "To,Do - Desenvolvimento Inteligente",
+  "domain": "Software Development & AI Automation",
+  "language": "pt-BR",
+  "colors": {
+    "background": {
+      "primary": "#e2e2e4",
+      "secondary": "#C4C4CC",
+      "tertiary": "#D1D1D6"
+    },
+    "text": {
+      "primary": "#161617",
+      "secondary": "#2d2d2d",
+      "muted": "#555555"
+    },
+    "accents": {
+      "primary": "rgb(0, 255, 102)",
+      "primary_hover": "rgb(0, 215, 85)",
+      "secondary": "#80FFF9",
+      "secondary_hover": "#50EBE3"
+    },
+    "borders": {
+      "default": "#C4C4CC",
+      "focus": "rgb(0, 255, 102)"
+    }
+  },
+  "typography": {
+    "font_families": {
+      "heading": "'Figtree', sans-serif",
+      "body": "'Inter', sans-serif",
+      "mono": "'JetBrains Mono', monospace",
+      "decorative": "'Nanum Pen Script', cursive"
+    },
+    "hierarchy": {
+      "h1": "text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter leading-none",
+      "h2": "text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight",
+      "h3": "text-2xl sm:text-3xl font-semibold tracking-tight",
+      "h4": "text-xl font-medium",
+      "body": "text-base leading-relaxed text-[#2d2d2d]",
+      "small": "text-sm text-[#555555]",
+      "code": "font-mono text-sm tracking-tight",
+      "decorative": "font-['Nanum_Pen_Script'] text-2xl sm:text-3xl text-[#555555] rotate-[-2deg]"
+    }
+  },
+  "spacing_and_layout": {
+    "container": "max-w-7xl mx-auto px-6 sm:px-8 md:px-12",
+    "section_spacing": "py-24 sm:py-32",
+    "grid_system": "Bento Grid protocol: grid-cols-1 md:grid-cols-12 gap-6 or gap-8",
+    "card_padding": "p-6 sm:p-8"
+  },
+  "components": {
+    "navigation": {
+      "style": "Fixed top, w-full, z-50",
+      "background": "bg-[#e2e2e4]/80 backdrop-blur-xl border-b border-[#C4C4CC]/50",
+      "cta_button": "bg-[#161617] text-white hover:bg-[#2d2d2d] transition-colors rounded-full px-6 py-2 text-sm font-medium",
+      "links": "text-[#2d2d2d] hover:text-[#161617] font-medium text-sm transition-colors"
+    },
+    "cards": {
+      "style": "bg-[#e2e2e4] rounded-2xl border border-[#C4C4CC] overflow-hidden",
+      "hover_state": "hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1 transition-all duration-300",
+      "image_container": "aspect-video w-full bg-[#C4C4CC] overflow-hidden",
+      "content_padding": "p-6 sm:p-8"
+    },
+    "buttons": {
+      "primary": "bg-[rgb(0,255,102)] text-[#161617] hover:bg-[#00e55b] font-semibold rounded-full px-6 py-3 transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2",
+      "secondary": "bg-[#161617] text-[#e2e2e4] hover:bg-[#2d2d2d] font-semibold rounded-full px-6 py-3 transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2",
+      "outline": "border border-[#161617] text-[#161617] hover:bg-[#161617] hover:text-[#e2e2e4] font-semibold rounded-full px-6 py-3 transition-colors flex items-center justify-center gap-2"
+    },
+    "inputs": {
+      "style": "w-full bg-transparent border-b-2 border-[#C4C4CC] focus:border-[rgb(0,255,102)] py-3 outline-none transition-colors text-[#161617] placeholder:text-[#555555]"
+    }
+  },
+  "media": {
+    "images": {
+      "hero_3d": {
+        "url": "https://images.unsplash.com/photo-1637775297509-19767f6fc225?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTN8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMDNkJTIwc2hhcGUlMjBtaW5pbWFsfGVufDB8fHx8MTc3NzY1NTYxNnww&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract 3D circular object, use with mix-blend-multiply or CSS filter to tint it subtly with the neon green/blue brand colors in the hero section.",
+        "category": "hero"
+      },
+      "project_1": {
+        "url": "https://images.unsplash.com/photo-1591439657848-9f4b9ce436b9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwzfHxtb2Rlcm4lMjBzb2Z0d2FyZSUyMGNvZGUlMjBtaW5pbWFsJTIwc2NyZWVufGVufDB8fHx8MTc3NzY1NTYxMHww&ixlib=rb-4.1.0&q=85",
+        "description": "Dark code editor screen for development project case study.",
+        "category": "work"
+      },
+      "project_2": {
+        "url": "https://images.unsplash.com/photo-1585384107568-5bc588c7eefd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBzb2Z0d2FyZSUyMGNvZGUlMjBtaW5pbWFsJTIwc2NyZWVufGVufDB8fHx8MTc3NzY1NTYxMHww&ixlib=rb-4.1.0&q=85",
+        "description": "Minimalist tech setup for AI/Automation case study.",
+        "category": "work"
+      },
+      "about_team": {
+        "url": "https://images.unsplash.com/photo-1690383921891-3f0a7567d815?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjB0ZWFtJTIwb2ZmaWNlJTIwbWluaW1hbHxlbnwwfHx8fDE3Nzc2NTU2MTZ8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Team working collaboratively on laptops, minimal modern office.",
+        "category": "about"
+      }
+    },
+    "icons": {
+      "library": "lucide-react",
+      "usage": "Use stroke-width=1.5 for a cleaner, modern look. Size typically w-5 h-5 for buttons, w-8 h-8 for section features."
+    }
+  },
+  "pages_structure": {
+    "Home": {
+      "layout": "Hero section. Massive impact H1: 'Criando soluções que conectam.' Centered or asymmetrical layout with the hero_3d image floating. Subtitle about intelligent development. Social/Github links. CTA button.",
+      "data_testid": "home-section"
+    },
+    "Work": {
+      "layout": "Bento Grid of project cards (use mocked data: Web App, Mobile App, AI Integration). Include image thumbnails (project_1, project_2). Tags for tech stack (React, Node, Python, etc.). Hover states are crucial.",
+      "data_testid": "work-section"
+    },
+    "Topics (Serviços)": {
+      "layout": "Grid or list of categories: Desenvolvimento Web, Mobile, IA, Automação. Minimalist presentation, perhaps with Lucide icons.",
+      "data_testid": "services-section"
+    },
+    "About": {
+      "layout": "Editorial layout. 'Olá, nós somos a To,Do.' using Figtree. Text blocks for history, tech stack, team. Incorporate the about_team image in a portrait-style card with a subtle decorative toast/badge 'PORTRAIT 2025' or 'To,Do 2025'. Include decorative font 'Nanum Pen Script' for a handwritten touch.",
+      "data_testid": "about-section"
+    },
+    "Contact": {
+      "layout": "Clean, minimalist form. Inputs for Name, Email, Project Details. Submit button using primary green accent. Note: The backend will save this to MongoDB.",
+      "data_testid": "contact-section"
+    },
+    "Footer": {
+      "layout": "Detailed footer, dark text on the secondary background (#C4C4CC). Copyright, social links, contact email.",
+      "data_testid": "footer-section"
+    }
+  },
+  "instructions_to_main_agent": [
+    "Strictly adhere to the color palette. DO NOT use generic white (#ffffff) or black (#000000) for backgrounds/text; stick to the provided #e2e2e4, #C4C4CC, #161617.",
+    "Import and apply fonts correctly via Google Fonts in index.css (Figtree, Inter, JetBrains Mono, Nanum Pen Script).",
+    "Use Framer Motion to add subtle enter animations (fade-up) and micro-interactions on cards (hover:scale).",
+    "Replace 'Subscribe' with 'Fale conosco' in the navbar CTA as requested.",
+    "For the Contact Form, set up a basic functional structure that sends data to an API route (to be implemented with MongoDB).",
+    "Ensure all interactive elements have data-testid attributes for testing.",
+    "Do NOT use generic Shadcn Card components if they feel too 'boxy' or standard; customize them to fit the flat, soft-bordered Bento grid style described.",
+    "All text must be in Portuguese (Brazil)."
+  ]
+}
