@@ -1,23 +1,339 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="To,Do — Transformando PMEs com soluções de IA. Rápido, acessível e premium." />
-    <meta name="theme-color" content="#0A0A0A" />
-    <meta property="og:title" content="To,Do — Agência de Soluções IA" />
-    <meta property="og:description" content="Transformando PMEs com soluções de IA em 4-8 semanas. Rápido, acessível e premium." />
-    <meta property="og:type" content="website" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="To,Do — Transformando PMEs com soluções de IA. Rápido, acessível e premium.">
     <title>To,Do — Agência de Soluções IA Premium</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/To-Do---Desenvolvimento-Inteligente/assets/index-DoetOoe6.js"></script>
-    <link rel="modulepreload" crossorigin href="/To-Do---Desenvolvimento-Inteligente/assets/vendor-C1lORWBz.js">
-    <link rel="modulepreload" crossorigin href="/To-Do---Desenvolvimento-Inteligente/assets/gsap-Dir1RnRV.js">
-    <link rel="stylesheet" crossorigin href="/To-Do---Desenvolvimento-Inteligente/assets/index-C2htCO76.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: #0A0A0A;
+            color: #ffffff;
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #00FF88 0%, #00D9FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00FF88 0%, #00D9FF 100%);
+            color: #0A0A0A;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0A0A0A, #1a1a2e);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1), transparent);
+            border-radius: 50%;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1), transparent);
+            border-radius: 50%;
+            animation: pulse 4s ease-in-out infinite 2s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 5rem);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00FF88, #00D9FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #b0b0b0;
+        }
+
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            padding: 2rem;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #00FF88;
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #00FF88;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            color: #b0b0b0;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="gradient-text">20 Anos de Experiência</h1>
+            <h2 class="text-2xl md:text-3xl mb-8">→ 1 Solução Radical</h2>
+
+            <p>Depois de 20 anos enfrentando os mesmos problemas em minhas empresas, criei a To,Do.</p>
+            <p class="mb-6">Soluções rápidas. Acessíveis. Premium.</p>
+
+            <div class="grid max-w-2xl mx-auto mb-8">
+                <div class="card">
+                    <p><strong>Falta de automação IA</strong></p>
+                </div>
+                <div class="card">
+                    <p><strong>Processos lentos e manuais</strong></p>
+                </div>
+                <div class="card">
+                    <p><strong>Custo operacional alto</strong></p>
+                </div>
+                <div class="card">
+                    <p><strong>Equipe focada em tarefas repetitivas</strong></p>
+                </div>
+            </div>
+
+            <div class="flex gap-4 justify-center mb-12 flex-wrap">
+                <button class="btn-primary">Descobrir Soluções →</button>
+                <button class="btn-primary" style="background: transparent; color: #00FF88; border: 2px solid #00FF88;">Agendar Conversa →</button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 max-w-600px mx-auto">
+                <div class="stat-box">
+                    <div class="stat-number">500</div>
+                    <div class="stat-label">Empresas Transformadas</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">20</div>
+                    <div class="stat-label">Anos de Experiência</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">99</div>
+                    <div class="stat-label">% Satisfação</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOLUTIONS SECTION -->
+    <section class="section" id="solutions" style="background: linear-gradient(180deg, #1a1a2e, #0a0a0a);">
+        <h2>Nossas Soluções</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>🌐 Websites & Plataformas</h3>
+                <p>Sites modernos, responsivos e otimizados para conversão. Integrados com IA para máxima eficiência.</p>
+            </div>
+            <div class="card">
+                <h3>🤖 CRM com IA</h3>
+                <p>Gerencie seus clientes de forma inteligente. Automação total de processos comerciais.</p>
+            </div>
+            <div class="card">
+                <h3>📊 ERP com IA</h3>
+                <p>Controle total da sua operação. Relatórios inteligentes em tempo real.</p>
+            </div>
+            <div class="card">
+                <h3>🧠 Agentes IA</h3>
+                <p>Bots inteligentes que trabalham 24/7 para sua empresa. Automação de tarefas repetitivas.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- VALUES SECTION -->
+    <section class="section" id="values">
+        <h2>Por que escolher To,Do?</h2>
+        <div class="grid">
+            <div class="card">
+                <h3 style="color: #FFD700;">⚡ Rápido</h3>
+                <p>4-8 semanas. Não anos. Sua solução em semanas, não meses.</p>
+            </div>
+            <div class="card">
+                <h3 style="color: #00FF88;">💰 Acessível</h3>
+                <p>Preço justo para PMEs. Sem cobranças escondidas. Transparência total.</p>
+            </div>
+            <div class="card">
+                <h3 style="color: #B818FF;">👑 Premium</h3>
+                <p>Qualidade enterprise. Infraestrutura robusta. Suporte dedicado.</p>
+            </div>
+            <div class="card">
+                <h3 style="color: #00D9FF;">🚀 Transformador</h3>
+                <p>Seus processos mudam para melhor. ROI garantido. Crescimento escalável.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="section" id="cta" style="background: rgba(0, 255, 136, 0.05); border-top: 1px solid rgba(0, 255, 136, 0.2);">
+        <h2>Pronto para transformar sua empresa?</h2>
+        <p style="text-align: center; color: #b0b0b0; margin-bottom: 2rem; font-size: 1.1rem;">
+            Agende uma conversa estratégica de 30 minutos. Sem compromisso. Sem cobranças.
+        </p>
+        <div style="text-align: center; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="https://wa.me/5511920787813" class="btn-primary">
+                💬 WhatsApp: (11) 92078-7813
+            </a>
+            <a href="mailto:todofacilitiesoficial@gmail.com" class="btn-primary">
+                📧 Email
+            </a>
+            <a href="#" class="btn-primary">
+                📅 Agendar Conversa
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background: #000000; padding: 3rem 2rem; text-align: center; border-top: 1px solid rgba(0, 255, 136, 0.2);">
+        <p style="color: #b0b0b0; margin-bottom: 1rem;">
+            To,Do — Agência de Soluções de IA Premium
+        </p>
+        <p style="color: #666666; font-size: 0.9rem;">
+            © 2025 To,Do. Todos os direitos reservados.
+        </p>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animate hero stats on load
+        window.addEventListener('load', () => {
+            gsap.fromTo('.stat-number',
+                { textContent: 0 },
+                {
+                    textContent: 500,
+                    duration: 2,
+                    ease: 'power2.out',
+                    snap: { textContent: 1 }
+                }
+            );
+        });
+
+        // Card hover animations
+        document.querySelectorAll('.card').forEach((card, index) => {
+            gsap.fromTo(card,
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    delay: index * 0.1,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 80%',
+                        once: true
+                    }
+                }
+            );
+        });
+    </script>
+</body>
 </html>
