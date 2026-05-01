@@ -5,7 +5,7 @@ yarn.lock
 pnpm-lock.yaml
 
 # Build
-dist/
+# dist/  -- Comentado para GitHub Pages deployment
 build/
 *.tsbuildinfo
 
