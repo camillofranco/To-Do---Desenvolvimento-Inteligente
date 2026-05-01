@@ -40,14 +40,35 @@
             font-weight: 700;
             cursor: pointer;
             border: none;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
         }
 
         .btn-primary:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px rgba(0, 255, 136, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-2px);
         }
 
         .btn-primary:disabled {
@@ -73,9 +94,10 @@
             left: -200px;
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle, rgba(0, 255, 136, 0.15), transparent);
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.2), transparent);
             border-radius: 50%;
             animation: float 8s ease-in-out infinite;
+            filter: blur(40px);
         }
 
         .hero::after {
@@ -85,14 +107,36 @@
             right: -200px;
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle, rgba(0, 217, 255, 0.15), transparent);
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.2), transparent);
             border-radius: 50%;
             animation: float 10s ease-in-out infinite 2s;
+            filter: blur(40px);
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0) scale(1); }
             50% { transform: translateY(30px) scale(1.05); }
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.5)); }
+            50% { filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.8)); }
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .hero-content {
@@ -155,13 +199,33 @@
             background: rgba(0, 255, 136, 0.02);
             border: 1.5px solid rgba(0, 255, 136, 0.15);
             border-radius: 16px;
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 0%, rgba(0, 255, 136, 0.1) 50%, transparent 100%);
+            transform: rotate(45deg);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .card:hover {
             border-color: #00FF88;
-            background: rgba(0, 255, 136, 0.05);
-            transform: translateY(-12px);
+            background: rgba(0, 255, 136, 0.08);
+            transform: translateY(-16px);
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+        }
+
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card h3 {
@@ -237,12 +301,33 @@
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .form-submit:hover:not(:disabled)::before {
+            left: 100%;
         }
 
         .form-submit:hover:not(:disabled) {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px rgba(0, 255, 136, 0.6);
+        }
+
+        .form-submit:active:not(:disabled) {
+            transform: translateY(-2px);
         }
 
         .form-submit:disabled {
@@ -284,12 +369,72 @@
             color: #b0b0b0;
         }
 
+        /* GLASSMORPHISM EFFECT */
+        .section {
+            perspective: 1000px;
+        }
+
+        /* ANIMATED GRADIENT BACKGROUND */
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* PREMIUM HOVER GLOW */
+        .card:hover h3 {
+            animation: glow-pulse 1s ease-in-out;
+        }
+
+        /* SECTION DIVIDER */
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+        }
+
+        /* TEXT GRADIENT ANIMATION */
+        @keyframes gradient-text {
+            0% { background-position: 0%; }
+            100% { background-position: 100%; }
+        }
+
+        .gradient-neon {
+            background-size: 200% auto;
+            animation: gradient-text 4s linear infinite;
+        }
+
+        /* SMOOTH SCROLL BEHAVIOR ENHANCEMENT */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        /* LOADING ANIMATION */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        /* FORM INPUT FOCUS GLOW */
+        .form-group input:focus,
+        .form-group textarea:focus {
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+        }
+
         @media (max-width: 768px) {
             .stats-section {
                 grid-template-columns: 1fr;
             }
             .form-section {
                 padding: 2rem;
+            }
+            .card {
+                transform: translateY(0) !important;
             }
         }
     </style>
@@ -333,7 +478,7 @@
     </section>
 
     <!-- SOLUTIONS -->
-    <section class="section" style="background: linear-gradient(180deg, rgba(0, 255, 136, 0.03), rgba(0, 217, 255, 0.03));">
+    <section class="section" style="background: linear-gradient(180deg, rgba(0, 255, 136, 0.03), rgba(0, 217, 255, 0.03)); position: relative;">
         <h2 class="gradient-neon">Soluções Comprovadas que Crescem com Você</h2>
         <p style="color: #b0b0b0; margin-bottom: 3rem; text-align: center; max-width: 700px; margin-left: auto; margin-right: auto; font-size: 1.05rem;">
             Escolha a solução que sua empresa precisa. Ou combine várias. Temos expertise em todas.
@@ -486,22 +631,161 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // Animate cards
-        gsap.utils.toArray('.card').forEach((card, index) => {
-            gsap.fromTo(card,
-                { opacity: 0, y: 50 },
+        // HERO ANIMATIONS - Entrada sofisticada
+        gsap.fromTo('.hero h1',
+            { opacity: 0, y: 60, filter: 'blur(10px)' },
+            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, delay: 0.2 }
+        );
+
+        gsap.fromTo('.hero h2',
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.8, delay: 0.4 }
+        );
+
+        gsap.fromTo('.hero p',
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.8, delay: 0.6, stagger: 0.1 }
+        );
+
+        gsap.fromTo('.stats-section',
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.8, delay: 0.9 }
+        );
+
+        // STATS COUNTER ANIMATION
+        gsap.fromTo('.stat-number',
+            { innerText: '0' },
+            {
+                innerText: (i) => {
+                    const targets = ['500', '4', '47'];
+                    return targets[i];
+                },
+                duration: 2,
+                delay: 1.2,
+                snap: { innerText: 1 },
+                scrollTrigger: {
+                    trigger: '.stats-section',
+                    start: 'top 80%',
+                    once: true
+                }
+            }
+        );
+
+        // PARALLAX EFFECT NO HERO
+        gsap.to('.hero::before', {
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top top',
+                end: 'bottom center',
+                scrub: 1,
+                markers: false
+            },
+            y: 100,
+            ease: 'none'
+        });
+
+        gsap.to('.hero::after', {
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top top',
+                end: 'bottom center',
+                scrub: 1,
+                markers: false
+            },
+            y: -100,
+            ease: 'none'
+        });
+
+        // SECTION TITLES ANIMATION
+        gsap.utils.toArray('.section h2').forEach((title) => {
+            gsap.fromTo(title,
+                { opacity: 0, y: 40 },
                 {
                     opacity: 1,
                     y: 0,
                     duration: 0.8,
-                    delay: index * 0.1,
                     scrollTrigger: {
-                        trigger: card,
-                        start: 'top 85%',
+                        trigger: title,
+                        start: 'top 80%',
                         once: true
                     }
                 }
             );
+        });
+
+        // ANIMATE CARDS COM STAGGER
+        gsap.utils.toArray('.grid-cards .card').forEach((card, index) => {
+            gsap.fromTo(card,
+                { opacity: 0, y: 60, rotationY: -10 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    rotationY: 0,
+                    duration: 0.8,
+                    delay: index * 0.15,
+                    scrollTrigger: {
+                        trigger: card.closest('.grid-cards'),
+                        start: 'top 80%',
+                        once: true
+                    },
+                    ease: 'back.out(1.5)'
+                }
+            );
+        });
+
+        // FORM ANIMATION
+        gsap.fromTo('.form-section',
+            { opacity: 0, y: 40, filter: 'blur(10px)' },
+            {
+                opacity: 1,
+                y: 0,
+                filter: 'blur(0px)',
+                duration: 0.8,
+                scrollTrigger: {
+                    trigger: '.form-section',
+                    start: 'top 80%',
+                    once: true
+                }
+            }
+        );
+
+        // FLOATING ANIMATION PARA ELEMENTOS
+        function createFloatingAnimation(selector) {
+            gsap.to(selector, {
+                y: -20,
+                duration: 3,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+        }
+
+        // SCROLL VELOCITY TEXT
+        let proxy = { skew: 0, skewSetter(value) {
+            this.skew = value;
+            gsap.set('.hero h1', { skewY: this.skew, overwrite: 'auto' });
+        }},
+        skewSetter = gsap.quickSetter('.hero h1', 'skewY', 'deg'),
+        clamp = gsap.utils.clamp(-20, 20);
+
+        gsap.set('.hero h1', { transformOrigin: 'center center' });
+
+        ScrollTrigger.create({
+            onUpdate: (self) => {
+                let skew = clamp(self.getVelocity() / 300);
+                if (Math.abs(skew) > Math.abs(proxy.skew)) {
+                    proxy.skew = skew;
+                    skewSetter(skew);
+                }
+            }
+        });
+
+        gsap.set('.hero h1', { skewY: 0, force3D: true }, 0);
+        gsap.fromTo(proxy, { skew: 0 }, {
+            skew: 0,
+            duration: 0.8,
+            ease: 'power3',
+            overwrite: 'auto'
         });
 
         // FORM HANDLING
