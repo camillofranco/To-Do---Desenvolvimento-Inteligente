@@ -28,21 +28,21 @@ export default function FooterRadical() {
       )
 
       // Back to top button visibility
-      gsap.fromTo(
-        backToTopRef.current,
-        { opacity: 0, scale: 0 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.5,
-          scrollTrigger: {
-            trigger: 'body',
-            start: 'top 300px',
-            onEnter: () => gsap.to(backToTopRef.current, { opacity: 1, scale: 1, duration: 0.3 }),
-            onLeaveBack: () => gsap.to(backToTopRef.current, { opacity: 0, scale: 0, duration: 0.3 }),
-          },
-        }
-      )
+      if (backToTopRef.current) {
+        gsap.to(backToTopRef.current, {
+          opacity: 0,
+          scale: 0,
+          duration: 0,
+        })
+
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 300) {
+            gsap.to(backToTopRef.current, { opacity: 1, scale: 1, duration: 0.3 })
+          } else {
+            gsap.to(backToTopRef.current, { opacity: 0, scale: 0, duration: 0.3 })
+          }
+        })
+      }
     }, containerRef)
 
     return () => ctx.revert()
