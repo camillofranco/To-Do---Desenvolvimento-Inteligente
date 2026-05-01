@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
 import CoreEngine from './CoreEngine';
+import './core-engine.css';
 import {
   ArrowRight,
   Bot,
