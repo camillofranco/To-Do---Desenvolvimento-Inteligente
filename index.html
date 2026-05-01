@@ -147,9 +147,13 @@
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 10vw, 6rem);
-            line-height: 1.1;
-            margin-bottom: 1rem;
+            font-size: clamp(2.8rem, 12vw, 7rem);
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            text-shadow: 0 0 40px rgba(0, 255, 136, 0.3),
+                        0 0 80px rgba(0, 217, 255, 0.2);
         }
 
         .stats-section {
@@ -162,18 +166,24 @@
         }
 
         .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #00FF88, #00D9FF);
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00FF88, #00D9FF, #B818FF);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: -2px;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.2));
         }
 
         .stat-label {
             color: #b0b0b0;
             font-size: 0.95rem;
             margin-top: 0.5rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .section {
@@ -386,7 +396,16 @@
             animation: glow-pulse 1s ease-in-out;
         }
 
-        /* SECTION DIVIDER */
+        /* DIAGONAL DIVIDERS */
+        .section {
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
+        }
+
+        .section:nth-child(even) {
+            clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 95%);
+        }
+
         .section::before {
             content: '';
             position: absolute;
@@ -395,6 +414,7 @@
             right: 0;
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+            z-index: 1;
         }
 
         /* TEXT GRADIENT ANIMATION */
@@ -405,7 +425,32 @@
 
         .gradient-neon {
             background-size: 200% auto;
-            animation: gradient-text 4s linear infinite;
+            animation: gradient-text 6s linear infinite;
+            letter-spacing: -1px;
+        }
+
+        /* NEON BORDER ANIMATION */
+        @keyframes neon-glow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(0, 255, 136, 0.5),
+                            0 0 20px rgba(0, 217, 255, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(0, 255, 136, 0.8),
+                            0 0 30px rgba(0, 217, 255, 0.6),
+                            0 0 40px rgba(184, 24, 255, 0.4);
+            }
+        }
+
+        .section h2 {
+            animation: neon-glow 3s ease-in-out infinite;
+        }
+
+        /* CARD ADVANCED EFFECTS */
+        @keyframes border-flow {
+            0% { border-color: rgba(0, 255, 136, 0.3); }
+            50% { border-color: #00D9FF; }
+            100% { border-color: rgba(0, 255, 136, 0.3); }
         }
 
         /* SMOOTH SCROLL BEHAVIOR ENHANCEMENT */
@@ -422,8 +467,20 @@
 
         /* FORM INPUT FOCUS GLOW */
         .form-group input:focus,
-        .form-group textarea:focus {
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+        .form-group textarea:focus,
+        .form-group select:focus {
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.6),
+                       inset 0 0 20px rgba(0, 255, 136, 0.1);
+            background: rgba(0, 255, 136, 0.08);
+        }
+
+        /* FORM SECTION GLOW */
+        .form-section {
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.15);
+        }
+
+        .form-section:hover {
+            box-shadow: 0 0 80px rgba(0, 255, 136, 0.25);
         }
 
         @media (max-width: 768px) {
@@ -760,32 +817,57 @@
             });
         }
 
-        // SCROLL VELOCITY TEXT
-        let proxy = { skew: 0, skewSetter(value) {
-            this.skew = value;
-            gsap.set('.hero h1', { skewY: this.skew, overwrite: 'auto' });
-        }},
-        skewSetter = gsap.quickSetter('.hero h1', 'skewY', 'deg'),
-        clamp = gsap.utils.clamp(-20, 20);
-
-        gsap.set('.hero h1', { transformOrigin: 'center center' });
-
-        ScrollTrigger.create({
-            onUpdate: (self) => {
-                let skew = clamp(self.getVelocity() / 300);
-                if (Math.abs(skew) > Math.abs(proxy.skew)) {
-                    proxy.skew = skew;
-                    skewSetter(skew);
+        // SMOOTH SCROLL EFFECT NO HERO
+        gsap.fromTo('.hero-content',
+            { y: 0, opacity: 1 },
+            {
+                y: -80,
+                opacity: 0.8,
+                scrollTrigger: {
+                    trigger: '.hero',
+                    start: 'top top',
+                    end: 'bottom 80%',
+                    scrub: 1,
+                    markers: false
                 }
+            }
+        );
+
+        // TEXT REVEAL ANIMATION
+        gsap.utils.toArray('.section p').forEach((el, index) => {
+            if (index < 3) {
+                gsap.fromTo(el,
+                    { opacity: 0, y: 20 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        delay: index * 0.15,
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 80%',
+                            once: true
+                        }
+                    }
+                );
             }
         });
 
-        gsap.set('.hero h1', { skewY: 0, force3D: true }, 0);
-        gsap.fromTo(proxy, { skew: 0 }, {
-            skew: 0,
-            duration: 0.8,
-            ease: 'power3',
-            overwrite: 'auto'
+        // STAT BOX GLOW ON SCROLL
+        gsap.utils.toArray('.stats-section > div').forEach((stat, index) => {
+            gsap.fromTo(stat,
+                { boxShadow: '0 0 0px rgba(0, 255, 136, 0)' },
+                {
+                    boxShadow: '0 0 20px rgba(0, 255, 136, 0.2)',
+                    duration: 0.6,
+                    delay: index * 0.2,
+                    scrollTrigger: {
+                        trigger: '.stats-section',
+                        start: 'top 70%',
+                        once: true
+                    }
+                }
+            );
         });
 
         // FORM HANDLING
